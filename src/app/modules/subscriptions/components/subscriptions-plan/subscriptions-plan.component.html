@@ -1,0 +1,303 @@
+<div class="card rounded-12 border-0 my-3">
+  <div class="card-body d-flex flex-column">
+    <header class="d-flex gap-3 flex-wrap justify-content-between
+      align-items-center">
+      <div class="col-12 col-sm-4">
+        <div class="input-group">
+          <span class="input-group-text border-0 bg-transparent" id="search">
+            <ion-icon name="search"></ion-icon>
+          </span>
+          <input type="text" class="form-control" [placeholder]="
+            'global.search' | translate" aria-label="search"
+            aria-describedby="search" [(ngModel)]="searchKey" />
+        </div>
+      </div>
+      <button type="button" class="btn btn-primary d-block mis-auto px-4
+        rounded-8 mb-3 d-flex gap-2 align-items-center"
+        (click)="add()">
+        <ion-icon name="add"></ion-icon>
+        {{ "global.add" | translate }}
+      </button>
+      <div *ngIf="false" class="d-flex col-12 col-sm justify-content-between
+        justify-content-sm-end gap-3">
+        <button type="button" class="btn d-flex text-info gap-2
+          align-items-center rounded-m rounded-8 bg-info-o">
+          {{ "order_by" | translate }}
+          <ion-icon name="caret-down-outline"></ion-icon>
+        </button>
+        <button type="button" class="btn d-flex text-info gap-2
+          align-items-center rounded-m rounded-8 bg-info-o">
+          <i class="fa-solid fa-sliders"></i>
+          {{ "filtration" | translate }}
+        </button>
+      </div>
+    </header>
+    <hr />
+    <section>
+      <div class="table-responsive text-primary">
+        <table class="table table-striped table-borderless">
+          <thead>
+            <tr>
+              <th scope="col" translate="subscriptions.plan_name"></th>
+              <th scope="col" translate="subscriptions.description"></th>
+              <th scope="col" translate="subscriptions.cost"></th>
+
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngIf="packages">
+              <tr class="c-pointer" *ngFor="
+                let package of packages
+                | filter: searchKey
+                | paginate
+                : {
+                itemsPerPage: pageSize,
+                currentPage: pageNumber,
+                totalItems: packages?.length,
+                id: 'package'
+                }
+                ">
+                <td>
+                  <div class="d-flex align-items-center">
+                    <div class="flex-grow-1 mis-3">
+                      <h6 class="mt-0 fw-500">{{ package.packageName }}</h6>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <div class="text-nowrap">{{package.packageDescription}}</div>
+                </td>
+
+                <td>
+                  {{package.packageTotalCost}}
+                </td>
+                <td>
+
+                  <div class="d-flex gap-2 justify-content-end">
+                    <button (click)="editFeatures(package)" type="button"
+                      class="btn rounded-8 bg-primary-hover text-black edit">
+                      <i class="fa-solid fa-pen-to-square"></i>
+                    </button>
+                    <button (click)="edit(package)" type="button" class="btn
+                      rounded-8 bg-primary-hover text-black edit">
+                      <i class="fa-solid fa-pen"></i>
+                    </button>
+                    <button (click)="exist(package)" type="button"
+                      class="btn text-black rounded-8 bg-danger-hover delete">
+                      <i class="fa-solid fa-trash"></i>
+                    </button>
+                  </div>
+
+                </td>
+              </tr>
+            </ng-container>
+
+            <tr *ngIf="!packages?.length">
+              <td colspan="6">
+                <h6 class="fw-500 text-danger text-align-center"
+                  translate="global.no_data_to_show"></h6>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <hr />
+
+      <div class="d-flex flex-wrap align-items-center justify-content-between
+        gap-3">
+        <div class="text-info d-flex gap-3 align-items-center">
+          <label class="fw-500" translate="global.for_page"></label>
+          <div>
+            <select class="form-select" (change)="onPageSizeChange($event)">
+              <option *ngFor="let size of sizes">
+                {{ size }}
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <pagination-controls id="package"
+          (pageChange)="onPageNumberChange($event)"
+          (pageBoundsCorrection)="onPageNumberChange($event)" [maxSize]="5"
+          [responsive]="true" [previousLabel]="''"
+          [nextLabel]="''" screenReaderPaginationLabel="Pagination"
+          screenReaderPageLabel="page"
+          screenReaderCurrentLabel="You're on page">
+        </pagination-controls>
+      </div>
+    </section>
+  </div>
+</div>
+
+<!------------------------AddPackageItem---------------------->
+<app-offcanvas [id]="canvasID">
+  <h3 translate="إضافة باقه" class="text-align-center fw-bold"></h3>
+  <form [formGroup]="newPackageForm" #form="ngForm"
+    class="d-flex flex-column gap-3 h-100 p-1 overflow-visible">
+    <!-----------------------------arabicName--------------------------------->
+    <div class="form-floating mb-3">
+      <input type="text" class="form-control" id="arabicName" placeholder="data"
+        formControlName="packageName" />
+      <label for="arabicName" translate="subscriptions.arabic_name"></label>
+    </div>
+    <div *ngIf="form.submitted &&
+      newPackageForm.controls['packageName']?.errors?.['required']"
+      class="error-message"
+      [innerHtml]="'settings.packageArabicName_required' | translate"></div>
+    <!-- <div *ngIf="form.submitted && newPackageForm.controls['packageName']?.errors?.['pattern']" class="error-message"
+[innerHtml]="'settings.packageArabicName_invalid' | translate"></div> -->
+    <!----------------------------englishName------------------------------->
+    <div class="form-floating mb-3">
+      <input type="text" class="form-control" id="englishName"
+        placeholder="data" formControlName="packageNameEn" />
+      <label for="englishName" translate="subscriptions.english_name"></label>
+    </div>
+    <div *ngIf="form.submitted &&
+      newPackageForm.controls['packageNameEn']?.errors?.['required']"
+      class="error-message"
+      [innerHtml]="'settings.packageEnglishName_required' | translate"></div>
+    <!-- <div *ngIf="form.submitted && newPackageForm.controls['packageNameEn']?.errors?.['pattern']" class="error-message"
+[innerHtml]="'settings.packageEnglishName_invalid' | translate"></div> -->
+    <!---------------------------------packageDescription---------------------------------------->
+    <div class="form-floating mt-3">
+      <textarea
+        class="form-control"
+        placeholder="Leave a comment here"
+        id="packageDescription"
+        style="height: 100px"
+        formControlName="packageDescription"></textarea>
+      <label for="packageDescription"
+        translate="subscriptions.arabic_packageDescription"></label>
+    </div>
+    <div *ngIf="form.submitted &&
+      newPackageForm.controls['packageDescription']?.errors?.['required']"
+      class="error-message"
+      [innerHtml]="'settings.packageDescriptionhName_required' | translate"></div>
+    <!-- <div *ngIf="form.submitted && newPackageForm.controls['packageDescription']?.errors?.['pattern']" class="error-message"
+[innerHtml]="'settings.packageDescriptionhName_invalid' | translate"></div> -->
+    <!---------------------------------packageDescriptionEn---------------------------------------->
+    <div class="form-floating mt-3">
+      <textarea
+        class="form-control"
+        placeholder="Leave a comment here"
+        id="packageDescriptionEn"
+        style="height: 100px"
+        formControlName="packageDescriptionEn"></textarea>
+      <label for="packageDescriptionEn"
+        translate="subscriptions.english_packageDescription"></label>
+    </div>
+    <div *ngIf="form.submitted &&
+      newPackageForm.controls['packageDescriptionEn']?.errors?.['required']"
+      class="error-message"
+      [innerHtml]="'settings.packageDescriptionEnhName_required' | translate"></div>
+    <!-- <div *ngIf="form.submitted && newPackageForm.controls['packageDescriptionEn']?.errors?.['pattern']" class="error-message"
+[innerHtml]="'settings.packageDescriptionEnhName_invalid' | translate"></div> -->
+    <!---------------------------------packageTotalCost----------------------------------->
+    <div class="form-floating mb-3">
+      <input type="number" class="form-control" id="packageTotalCost"
+        placeholder="data" formControlName="packageTotalCost" />
+      <label for="packageTotalCost" translate="subscriptions.number"></label>
+    </div>
+    <div *ngIf="form.submitted &&
+      newPackageForm.controls['packageTotalCost']?.errors?.['required']"
+      class="error-message"
+      [innerHtml]="'settings.cost_required' | translate"></div>
+    <div *ngIf="form.submitted &&
+      newPackageForm.controls['packageTotalCost']?.errors?.['pattern']"
+      class="error-message"
+      [innerHtml]="'settings.cost_invalid' | translate"></div>
+    <!------------------------------------------------------------------------------------->
+    <label *ngIf="id==null" translate="subscriptions.additional_features"></label>
+    <div *ngIf="id==null" class="form-floating mb-3">
+      <div *ngFor="let pakageItem of pakageItems ; let i=index">
+        <label>
+          <input #checkBox type="checkbox"
+            (change)="onChange(pakageItem, $event)"
+            />
+          {{
+          (lang.isAr | async)
+          ? pakageItem.itemName
+          : pakageItem.itemNameEn
+          }}
+        </label>
+      </div>
+    </div>
+    <div *ngIf="form.submitted && !model?.packageDetails?.length"
+      class="error-message"
+      [innerHtml]="'settings.additional_features_required' | translate"></div>
+    <!------------------------------------------------------------------------------------->
+    <div class="flex-grow-1 d-flex justify-content-end align-items-end gap-2
+      pb-3">
+      <button type="button" class="btn px-4 rounded-8 btn-light bg-info-o"
+        translate="global.cancel"
+        data-bs-dismiss="offcanvas" (click)="reset()"></button>
+      <button type="submit" *ngIf="id==null" (click)="addPackage()" class="btn
+        px-4 rounded-8 btn-primary" translate="global.add"></button>
+      <button type="submit" *ngIf="id!=null" (click)="update()" class="btn px-4
+        rounded-8 btn-primary" translate="global.edit"></button>
+    </div>
+
+  </form>
+</app-offcanvas>
+
+<!-- ------------------------------- delete -------------------------------- -->
+<app-modal classList="modal-dialog-centered" [id]="modalID">
+  <img src="assets/images/svgs/delete.svg" alt="" srcset="" />
+  <h4 class="fw-700"
+    translate="lookups.are_you_sure_about_deleting_packageItems"></h4>
+  <p class="mt-2 text-info" translate="global.cancel_this_operation"></p>
+
+  <div class="d-flex justify-content-end gap-2">
+    <button type="button" class="btn rounded-8 px-4 py-2 btn-light"
+      translate="global.cancel"
+      (click)="closeModal(modalID)"></button>
+    <button translate="global.yes_delete" type="button" class="btn rounded-8
+      px-4 py-2 btn-danger"
+      (click)="onDelete()"></button>
+  </div>
+</app-modal>
+
+<!--------------------------------------------------------------->
+<app-modal classList="modal-dialog-centered" [id]="addmodal">
+  <form [formGroup]="limitForm" #form="ngForm"
+    class="d-flex flex-column gap-3 h-100 p-1 overflow-visible">
+    <input type="number" class="form-control" id="limit" placeholder="data"
+      formControlName="limit" />
+    <div class="d-flex justify-content-end gap-2">
+      <button type="button" class="btn rounded-8 px-4 py-2 btn-light"
+        translate="global.cancel"
+        (click)="cancel()"></button>
+      <button translate="global.Add" type="button" class="btn rounded-8 px-4
+        py-2 btn-danger"
+        (click)="submitLimit()"></button>
+    </div>
+  </form>
+</app-modal>
+<!------------------------------------------------------------------->
+<app-offcanvas [id]="additionalFeatures">
+  <label translate="subscriptions.additional_features"></label>
+  <div class="form-floating mb-3">
+    <div *ngFor="let pakageItem of pakageItems ; let i=index">
+      <label>
+        <input #checkBox type="checkbox"
+          (change)="Change(pakageItem, $event)"
+          [checked]="compareItem(pakageItem)"
+          />
+        {{
+        (lang.isAr | async)
+        ? pakageItem.itemName
+        : pakageItem.itemNameEn
+        }}
+      </label>
+      <span class="px-5">test</span>
+    </div>
+  </div>
+  <div *ngIf="form.submitted && !model?.packageDetails?.length"
+    class="error-message"
+    [innerHtml]="'settings.additional_features_required' | translate"></div>
+  <button translate="global.Add" type="button" class="btn rounded-8 px-4 py-2
+    btn-danger"
+    (click)="submitFeatures()"></button>
+
+</app-offcanvas>

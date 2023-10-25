@@ -1,0 +1,87 @@
+@import "src/assets/styles/variables.scss";
+
+#edit {
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: small;
+  border-radius: 8px;
+}
+
+.avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 12px;
+}
+
+.h-32px {
+  height: 32px;
+}
+
+.list-group-item {
+  border: 0;
+  padding: 0.7rem;
+  border-radius: 8px;
+  gap: 1rem;
+}
+
+#profile-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr 30px;
+  gap: 0px 0px;
+  grid-template-areas:
+    "info"
+    "password";
+}
+
+#password {
+  grid-area: password;
+}
+
+#info {
+  grid-area: info;
+}
+
+:host-context(.ar) {
+  .list-group-item {
+    font-weight: 500;
+  }
+}
+
+
+
+@media (min-width: 500px) {
+  .file,
+  p-image {
+    background-color: $bg-light;
+    height: 150px;
+    width: 100%;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 8px;
+    background-size: cover;
+    background-position: center;
+  }
+}
+
+@media (max-width: 500px) {
+  .file,
+  p-image {
+    background-color: $bg-light;
+    height: 100px;
+    width: 100%;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 8px;
+    background-size: cover;
+    background-position: center;
+  }
+}

@@ -1,0 +1,317 @@
+<header class="d-flex justify-content-between align-items-center gap-3">
+  <p-dropdown
+    [options]="optionSets"
+    [placeholder]="'lookups.option_set' | translate"
+    optionLabel="name"
+    optionValue="id"
+    styleClass=" w-100 "
+    [filter]="true"
+    [filterBy]="'name'"
+    [formControl]="optionSetIdContorl"
+    styleClass="dd-style"
+  ></p-dropdown>
+  <div>
+    <button
+      [disabled]="!optionSetIdContorl.value"
+      type="button"
+      class="btn btn-primary rounded-8 d-flex gap-2 align-items-center px-4"
+      (click)="onAdd()"
+    >
+      <ion-icon name="add"></ion-icon>
+      {{ "global.add" | translate }}
+    </button>
+  </div>
+</header>
+
+<div class="card rounded-12 border-0 mt-4">
+  <div class="card-body">
+    <header
+      class="d-flex gap-3 flex-wrap justify-content-between align-items-center"
+    >
+      <div class="col-12 col-sm-4">
+        <div class="input-group">
+          <span class="input-group-text border-0 bg-transparent" id="search">
+            <ion-icon name="search"></ion-icon>
+          </span>
+          <input
+            [(ngModel)]="filteredOptionSetItem"
+            type="text"
+            class="form-control"
+            [placeholder]="'global.search' | translate"
+            aria-label="search"
+            aria-describedby="search"
+          />
+        </div>
+      </div>
+
+      <div
+        class="d-flex col-12 col-sm justify-content-between justify-content-sm-end gap-3"
+      >
+    
+      <div class="dropdown">
+        <button  class="btn d-flex text-info gap-2 align-items-center rounded-m rounded-8 bg-info-o  dropdown-toggle"  type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+          {{ "global.order_by" | translate }}
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+          <li class="dropdown-item" (click)="ascending()">{{"global.ascending"| translate}}</li>
+          <li class="dropdown-item" (click)="descending()">{{"global.descending"| translate}}</li>
+        </ul>
+      </div>
+        <!-- <button
+          type="button"
+          class="btn rounded-m rounded-8 btn-primary d-flex gap-2 align-items-center"
+        >
+          <i class="fa-solid fa-sliders"></i>
+          {{ "global.filtration" | translate }}
+        </button> -->
+      </div>
+    </header>
+
+    <hr />
+
+    <div class="table-responsive">
+      <table class="table table-striped table-borderless">
+        <thead>
+          <tr>
+            <!-- <th scope="col">#</th> -->
+            <th scope="col" translate="lookups.value"></th>
+            <th scope="col" translate="global.name_in_arabic"></th>
+            <th scope="col" translate="global.name_in_english"></th>
+            <th scope="col" translate="lookups.color"></th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            *ngFor="
+              let optionsetitem of optionsetItems
+                | filter: filteredOptionSetItem
+                | paginate
+                  : {
+                      itemsPerPage: pageSize,
+                      currentPage: pageNumber,
+                      totalItems: total,
+                      id: 'optionsets'
+                    }
+            "
+          >
+            <!-- <th scope="row" class="fw-bold" #id >{{optionsetitem.id}}</th> -->
+            <td>{{ optionsetitem.value }}</td>
+            <td>{{ optionsetitem.nameAr }}</td>
+            <td>{{ optionsetitem.nameEn }}</td>
+            <td>
+              <div
+                class="option-color"
+                [style.backgroundColor]="optionsetitem.color"
+              ></div>
+            </td>
+            <td>
+              <div class="d-flex gap-2 justify-content-end">
+                <button
+                  type="button"
+                  class="btn rounded-8 bg-primary-hover text-white edit"
+                  (click)="onEdit(optionsetitem)"
+                >
+                  <i class="fa-solid fa-pen"></i>
+                </button>
+                <button
+                  type="button"
+                  class="btn text-white rounded-8 bg-danger-hover delete"
+                  (click)="
+                    selectedOptionSetItem = optionsetitem.id; openModal(modelID)
+                  "
+                >
+                  <i class="fa-solid fa-trash"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+          <!--
+          <tr *ngIf="!optionsetItems?.length">
+            <td colspan="6" class="text-align-center fs-5 text-danger col-12">
+              <span translate="global.no_data_to_show" class="fw-500"></span>
+            </td>
+          </tr> -->
+
+          <tr *ngIf="!optionSetIdContorl.value">
+            <td colspan="6" class="text-align-center fs-5 text-danger col-12">
+              <span translate="global.no_data" class="fw-500"></span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <hr />
+
+    <div class="d-flex align-items-center justify-content-between gap-3">
+      <div class="text-info d-flex gap-3 align-items-center">
+        <label class="fw-500" translate="global.for_page"></label>
+        <div>
+          <select class="form-select" (change)="onPageSizeChange($event)">
+            <option *ngFor="let size of sizes" [selected]="size == pageSize">
+              {{ size }}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <pagination-controls
+        id="optionsets"
+        (pageChange)="pageNumber = $event"
+        (pageBoundsCorrection)="pageNumber = $event"
+        [maxSize]="5"
+        [responsive]="true"
+        [previousLabel]="''"
+        [nextLabel]="''"
+        screenReaderPaginationLabel="Pagination"
+        screenReaderPageLabel="page"
+        screenReaderCurrentLabel="You're on page"
+      >
+      </pagination-controls>
+    </div>
+  </div>
+</div>
+
+<app-offcanvas [id]="canvasID">
+  <form
+    [formGroup]="optonSetItemForm"
+    #form="ngForm"
+    (ngSubmit)="onSubmit()"
+    class="h-100"
+  >
+    <div class="h-100 d-flex flex-column">
+      <h3
+        translate="lookups.option_set_items"
+        class="text-align-center fw-bold"
+      ></h3>
+
+      <div class="mt-4 flex-grow-1">
+        <div class="mb-3">
+          <div class="form-floating">
+            <input
+              type="text"
+              class="form-control"
+              id="value"
+              placeholder="value"
+              formControlName="value"
+            />
+            <label for="value" translate="lookups.value"></label>
+          </div>
+          <div
+            class="error-message"
+            *ngIf="controls['value']?.errors?.required && form.submitted"
+          >
+            <ion-icon name="close-circle-outline" class="fs-5"></ion-icon>
+            {{ "validation.value_required" | translate }}
+          </div>
+        </div>
+        <div class="mb-3">
+          <div class="form-floating">
+            <input
+              type="text"
+              class="form-control"
+              id="nameEn"
+              placeholder="nameEn"
+              formControlName="nameEn"
+            />
+            <label for="nameEn" translate="global.name_in_english"></label>
+          </div>
+          <div
+            class="error-message"
+            *ngIf="controls['nameEn']?.errors?.required && form.submitted"
+          >
+            <ion-icon name="close-circle-outline" class="fs-5"></ion-icon>
+            {{ "validation.english_name_is_required" | translate }}
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <div class="form-floating">
+            <input
+              type="text"
+              class="form-control"
+              id="nameAr"
+              placeholder="nameAr"
+              formControlName="nameAr"
+            />
+            <label for="nameAr" translate="global.name_in_arabic"></label>
+          </div>
+          <div
+            class="error-message"
+            *ngIf="controls['nameAr']?.errors?.required && form.submitted"
+          >
+            <ion-icon name="close-circle-outline" class="fs-5"></ion-icon>
+            {{ "validation.arabic_name_is_required" | translate }}
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <div
+            class="d-flex justify-content-start gap-3 bg-info-o p-3 rounded-10"
+          >
+            <label class="text-info" translate="lookups.color" ></label>
+            <ngx-colors ngx-colors-trigger  [formControl]="Color"></ngx-colors>
+          </div>
+          <div
+            class="error-message"
+            *ngIf="controls['color']?.errors?.required && form.submitted"
+          >
+            <ion-icon name="close-circle-outline" class="fs-5"></ion-icon>
+            {{ "validation.color_required" | translate }}
+          </div>
+        </div>
+      </div>
+
+      <div class="d-flex flex-wrap justify-content-end gap-2">
+        <button
+          type="button"
+          class="btn px-4 rounded-8 btn-light"
+          translate="global.cancel"
+          (click)="form.resetForm(); closeCanvas(canvasID)"
+        ></button>
+
+        <button
+          *ngIf="!selectedOptionSetItem"
+          type="submit"
+          translate="global.add"
+          class="btn px-4 rounded-8 btn-primary"
+        ></button>
+
+        <button
+          *ngIf="selectedOptionSetItem"
+          type="submit"
+          translate="global.edit"
+          class="btn px-4 rounded-8 btn-primary"
+        ></button>
+      </div>
+    </div>
+  </form>
+</app-offcanvas>
+
+<app-modal classList="modal-dialog-centered" [id]="modelID">
+  <img src="assets/images/svgs/delete.svg" alt="" srcset="" />
+  <h4
+    class="fw-700"
+    translate="lookups.are_you_sure_about_deleting_option_item"
+  ></h4>
+  <p
+    class="mt-2 text-info"
+    translate="validation.when_deleting_country_all_its_cities_will_be_deleted"
+  ></p>
+
+  <div class="d-flex justify-content-end gap-2">
+    <button
+      type="button"
+      class="btn rounded-8 px-4 py-2 btn-light"
+      translate="global.cancel"
+      (click)="form.resetForm(); closeModal(modelID)"
+    ></button>
+    <button
+      translate="global.yes_delete"
+      type="button"
+      class="btn rounded-8 px-4 py-2 btn-danger"
+      (click)="onDelete(selectedOptionSetItem)"
+    ></button>
+  </div>
+</app-modal>

@@ -1,0 +1,184 @@
+<div class="card rounded-12 border-0 mt-4 mb-3">
+  <div class="card-body">
+    <header
+      class="d-flex gap-3 flex-wrap justify-content-between align-items-center"
+    >
+      <div class="col-12 col-sm-4">
+        <div class="input-group">
+          <span class="input-group-text border-0 bg-transparent" id="search">
+            <ion-icon name="search"></ion-icon>
+          </span>
+          <input
+            [(ngModel)]="searchKey"
+            type="text"
+            class="form-control"
+            [placeholder]="'global.search' | translate"
+            aria-label="search"
+            aria-describedby="search"
+          />
+        </div>
+      </div>
+      <div
+        class="d-flex col-12 col-sm justify-content-between justify-content-sm-end gap-3"
+      >
+      <button  class="btn rounded-m rounded-8 btn-primary d-flex gap-2 align-items-center" (click)="clear()"  type="button">
+        
+        {{ "global.clear"| translate }}
+      </button>
+      <div class="dropdown">
+        <button  class="btn d-flex text-info gap-2 align-items-center rounded-m rounded-8 bg-info-o  dropdown-toggle"  type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+          {{ "global.order_by" | translate }}
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+          <li class="dropdown-item" (click)="english()">{{"global.ascending"| translate}}</li>
+          <li class="dropdown-item" (click)="arabic()">{{"global.descending"| translate}}</li>
+        </ul>
+      </div>
+      <div class="dropdown menue2">
+        <button  class="btn rounded-m rounded-8 btn-primary d-flex gap-2 align-items-center  dropdown-toggle "  type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
+          <i class="fa-solid fa-sliders"></i>
+          {{ "global.filtration" | translate }}
+        </button>
+        <ul class="dropdown-menu " aria-labelledby="dropdownMenuButton2">
+          <li class="dropdown-item" *ngFor="let item of items" (click)="filter(item.value)"> {{
+            (lang.isAr | async)
+              ? item.nameAr
+              : item.nameEn
+          }}</li>
+        </ul>
+      </div>
+      </div>
+    
+    </header>
+
+    <hr />
+
+    <div class="table-responsive">
+      <table class="table table-striped table-borderless">
+        <thead>
+          <tr>
+            <th scope="col" translate="contracts.security_company"></th>
+            <th scope="col" translate="contracts.client_company"></th>
+            <th scope="col" translate="contracts.contract_type"></th>
+            <th scope="col" translate="contracts.contract_start_date"></th>
+            <th scope="col" translate="contracts.contract_end_date"></th>
+            <th scope="col" translate="contracts.contract_status"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <ng-container *ngIf="contracts">
+            <tr
+              *ngFor="
+                let contract of contracts
+                  | filter: searchKey
+                  | paginate
+                    : {
+                        itemsPerPage: pageSize,
+                        currentPage: pageNumber,
+                        totalItems: total,
+                        id: 'contracts'
+                      }
+              "
+            >
+              <td>
+                <div class="text-nowrap">
+                  {{ contract?.securityCompany?.name }}
+                </div>
+              </td>
+              <td>
+                <div class="text-nowrap">
+                  {{ contract?.clientCompany?.name }}
+                </div>
+              </td>
+              <td>
+                <div *ngIf="contract.contractType" class="text-nowrap">
+                  {{
+                    (lang.isAr | async)
+                      ? contract.contractType.nameAr
+                      : contract.contractType.nameEn
+                  }}
+                </div>
+                <div
+                  *ngIf="!contract.contractType"
+                  translate="global.not_specified"
+                ></div>
+              </td>
+              <td>
+                <div class="text-nowrap">
+                  {{ contract.startDate.split(" ")[0] }}
+                </div>
+              </td>
+              <td>
+                <div class="text-nowrap">
+                  {{ contract.endDate.split(" ")[0] }}
+                </div>
+              </td>
+              <td>
+                <app-status-badge
+                  [status]="contract.contractStatus"
+                ></app-status-badge>
+              </td>
+              <td>
+                <div
+                  class="d-flex gap-2 justify-content-end align-items-center"
+                >
+                  <button
+                    (click)="accept(contract.id)"
+                    type="button"
+                    class="btn btn-success text-white rounded-10"
+                    translate="companies.accept"
+                  ></button>
+                  <button
+                    (click)="openDetails(contract)"
+                    type="button"
+                    class="btn edit"
+                  >
+                    <i class="fa-solid fa-file-lines text-info"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </ng-container>
+          <tr *ngIf="!contracts?.length">
+            <td colspan="7">
+              <h6
+                translate="global.no_data_to_show"
+                class="fw-600 text-danger text-align-center"
+              ></h6>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <hr />
+    <div class="d-flex align-items-center justify-content-between gap-3">
+      <div class="text-info d-flex gap-3 align-items-center">
+        <label class="fw-500" verify="global.for_page"></label>
+        <div>
+          <select class="form-select" (change)="onPageSizeChange($event)">
+            <option *ngFor="let size of sizes" [selected]="size == pageSize">
+              {{ size }}
+            </option>
+          </select>
+        </div>
+      </div>
+      <pagination-controls
+        id="contracts"
+        (pageChange)="onPageNumber($event)"
+        (pageBoundsCorrection)="onPageNumber($event)"
+        [maxSize]="5"
+        [responsive]="true"
+        [previousLabel]="''"
+        [nextLabel]="''"
+        screenReaderPaginationLabel="Pagination"
+        screenReaderPageLabel="page"
+        screenReaderCurrentLabel="You're on page"
+      >
+      </pagination-controls>
+    </div>
+  </div>
+</div>
+
+<app-offcanvas [id]="canvasDetails">
+  <app-contract-details [contract]="selectedContract"></app-contract-details>
+</app-offcanvas>

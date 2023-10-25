@@ -1,0 +1,12 @@
+@mixin line-limit($number) {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: $number; /* number of lines to show */
+  line-clamp: $number;
+  -webkit-box-orient: vertical;
+}
+
+.limit-3 {
+  @include line-limit(3);
+}

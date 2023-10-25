@@ -1,0 +1,91 @@
+@import "src/assets/styles/variables.scss";
+@mixin bg-pattern($height) {
+  background: linear-gradient(to right, transparent, $primary-color),
+    $primary-color url("/assets/images/bgs/white-pattern.png");
+  height: $height;
+}
+
+.bg-pattern {
+  @include bg-pattern(130px);
+}
+
+.bg-pattern-auto {
+  @include bg-pattern(auto);
+}
+
+.social {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  a {
+    font-size: 1.5rem;
+    color: white;
+    background-color: rgba($color: $info-color, $alpha: 0.3);
+    width: 35px;
+    height: 35px;
+    display: flex;
+    border-radius: 8px;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+.logo {
+  transform: translateY(24px);
+}
+
+ul li {
+  list-style: none;
+  margin-top: 0.3rem;
+}
+
+ul {
+  padding: 0;
+}
+
+.list-info li {
+  color: $info-color;
+  margin-top: 0;
+}
+
+li label {
+  padding-inline-end: 5px;
+  position: relative;
+
+  &::after {
+    content: (" :");
+  }
+}
+
+.bank-icon {
+  background: $white;
+  width: 55px;
+  height: 55px;
+  font-size: x-large;
+  color: $primary-color;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+
+  * {
+    color: $primary-color;
+  }
+}
+
+.trans-top {
+  transform: translateY(-50%);
+}
+
+.nav-tabs::-webkit-scrollbar {
+  overflow: -moz-scrollbars-none;
+  -ms-overflow-style: none;
+  width: 0 !important;
+}
+
+.noplan{
+  height: 200px;
+  background-color: rgba($color: $black, $alpha: 0.5);
+   user-select: none;
+  cursor: not-allowed;
+}

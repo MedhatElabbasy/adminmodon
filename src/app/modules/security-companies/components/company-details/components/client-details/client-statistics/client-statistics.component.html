@@ -1,0 +1,53 @@
+<div class="card h-100 rounded-12 border-0 mb-3">
+    <div class="card-body d-flex flex-column">
+
+        <div id="chart" *ngIf="flag">
+            <apx-chart
+              [colors]="chartOptions.colors!"
+              [series]="chartOptions.series!"
+              [chart]="chartOptions.chart!"
+              [dataLabels]="chartOptions.dataLabels!"
+              [plotOptions]="chartOptions.plotOptions!"
+              [yaxis]="chartOptions.yaxis!"
+              [legend]="chartOptions.legend!"
+              [fill]="chartOptions.fill!"
+              [stroke]="chartOptions.stroke!"
+              [tooltip]="chartOptions.tooltip!"
+              [xaxis]="chartOptions.xaxis!"></apx-chart>
+          </div>
+          
+          <div class="container-fluid">
+            <div class="row">
+              <div
+                class="container-fluid col-lg-8 col-md-6 card border-0 rounded-10"
+                *ngIf="statistic"
+              >
+                <div class="card-body">
+                  <div class="row mt-3">
+                    <div class="col-lg col-md-6 my-1 pt-2 myboarder myboarder1">
+                      <h5 translate="security_dashboard.dash.totalHours"></h5>
+                      <p class="">
+                        {{ totalHoure }}
+                      </p>
+                    </div>
+                    <div class="col-lg col-md-6 my-1 pt-2 myboarder myboarder2">
+                      <h5 translate="security_dashboard.dash.workHours"></h5>
+                      <p class="">{{ totalWorkHoure }}</p>
+                    </div>
+                    <div class="col-lg col-md-6 my-1 pt-2 myboarder myboarder3">
+                      <h5 translate="security_dashboard.dash.breakHours"></h5>
+                      <p class="">{{ totalBrackHoure }}</p>
+                    </div>
+                    <div class="col-lg col-md-6 my-1 pt-2 myboarder myboarder4">
+                      <h5 translate="security_dashboard.dash.overTimeHours"></h5>
+                      <p class="">{{ totalExstraTime }}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-4 col-md-6"></div>
+            </div>
+          </div>
+          
+    </div>
+</div>

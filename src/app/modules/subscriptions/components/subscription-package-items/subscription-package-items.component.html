@@ -1,0 +1,192 @@
+
+<div class="card rounded-12 border-0 mt-2">
+    <div class="card-body">
+      <header class="d-flex gap-3 flex-wrap justify-content-between align-items-center">
+        <div class="col-12 col-sm-4">
+          <div class="input-group">
+            <span class="input-group-text border-0 bg-transparent" id="search">
+              <ion-icon name="search"></ion-icon>
+            </span>
+            <input [(ngModel)]="searchKey" type="text" class="form-control" [placeholder]="'global.search' | translate"
+              aria-label="search" aria-describedby="search" />
+          </div>
+        </div>
+  
+        <div class="d-flex col-12 col-sm justify-content-between justify-content-sm-end gap-3">
+          <!-- <button  class="btn rounded-m rounded-8 btn-primary d-flex gap-2 align-items-center" (click)="clear()"  type="button">
+        
+            {{ "global.clear"| translate }}
+          </button>
+          <div class="dropdown">
+            <button  class="btn d-flex text-info gap-2 align-items-center rounded-m rounded-8 bg-info-o  dropdown-toggle"  type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+              {{ "global.order_by" | translate }}
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+              <li class="dropdown-item" (click)="fromAtoZ()">{{"global.ascending"| translate}}</li>
+              <li class="dropdown-item" (click)="fromZtoA()">{{"global.descending"| translate}}</li>
+            </ul>
+          </div> -->
+          <div class="dropdown menue2">
+            <!-- <button  class="btn rounded-m rounded-8 btn-primary d-flex gap-2 align-items-center  dropdown-toggle "  type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
+              <i class="fa-solid fa-sliders"></i>
+              {{ "global.filtration" | translate }}
+            </button> -->
+          
+          </div>
+        </div>
+      </header>
+  
+      <hr />
+  
+      <div class="table-responsive">
+        <table class="table table-striped table-borderless">
+          <thead>
+            <tr>
+              <th scope="col" translate="global.name"></th>
+              <th scope="col" translate="subscriptions.cost"></th>
+              
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="
+                let packageItem of packageItems
+                  | filter: searchKey
+                  | paginate
+                    : {
+                        itemsPerPage: pageSize,
+                        currentPage: pageNumber,
+                        totalItems: total,
+                        id: 'packageItem'
+                      }
+              ">
+             
+              <td>
+                {{ packageItem.itemName }}
+              </td>
+              <td>
+                {{packageItem.cost}}
+              </td>
+              <td>
+                
+                  <div class="d-flex gap-2 justify-content-end">
+                    <button (click)="edit(packageItem)" type="button" class="btn rounded-8 bg-primary-hover edit">
+                      <i class="fa-solid fa-pen"></i>
+                    </button>
+                    <button (click)="exist(packageItem)" type="button"
+                      class="btn rounded-8 bg-danger-hover delete">
+                      <i class="fa-solid fa-trash"></i>
+                    </button>
+                  </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+  
+      <hr />
+  
+      <div class="d-flex align-items-center justify-content-between gap-3">
+        <div class="text-info d-flex gap-3 align-items-center">
+          <label class="fw-500" translate="global.for_page"></label>
+          <div>
+            <select class="form-select" (change)="onPageSizeChange($event)">
+              <option *ngFor="let size of sizes" [selected]="size == pageSize">
+                {{ size }}
+              </option>
+            </select>
+          </div>
+        </div>
+  
+        <pagination-controls id="packageItem" (pageChange)="onPageChange($event)" (pageBoundsCorrection)="onPageChange($event)"
+          [maxSize]="5" [responsive]="true" [previousLabel]="''" [nextLabel]="''" screenReaderPaginationLabel="Pagination"
+          screenReaderPageLabel="page" screenReaderCurrentLabel="You're on page">
+        </pagination-controls>
+      </div>
+    </div>
+  </div>
+  
+  <!-- ------------------------------- delete -------------------------------- -->
+  <app-modal classList="modal-dialog-centered" [id]="modalID">
+    <img src="assets/images/svgs/delete.svg" alt="" srcset="" />
+    <h4 class="fw-700" translate="lookups.are_you_sure_about_deleting_packageItems"></h4>
+    <p class="mt-2 text-info" translate="global.cancel_this_operation"></p>
+  
+    <div class="d-flex justify-content-end gap-2">
+      <button type="button" class="btn rounded-8 px-4 py-2 btn-light" translate="global.cancel"
+        (click)="closeModal(modalID)"></button>
+      <button translate="global.yes_delete" type="button" class="btn rounded-8 px-4 py-2 btn-danger"
+        (click)="onDelete()"></button>
+    </div>
+  </app-modal>
+  <!------------------------AddPackageItem---------------------->
+  <app-offcanvas [id]="canvasID">
+    <h3 translate="subscriptions.add_package" class="text-align-center fw-bold"></h3>
+    <form [formGroup]="packageForm" #form="ngForm" 
+    class="d-flex flex-column gap-3 h-100 p-1 overflow-visible">
+
+
+  <!-----------------------------arabicName--------------------------------->
+
+  <div class="form-floating mb-3">
+    <input type="text" class="form-control" id="arabicName" placeholder="data" formControlName="itemName" />
+    <label for="arabicName" translate="subscriptions.arabic_name"></label>
+  </div>
+
+  <!----------------------------englishName------------------------------->
+
+  <div class="form-floating mb-3">
+    <input type="text" class="form-control" id="englishName" placeholder="data" formControlName="itemNameEn" />
+    <label for="englishName" translate="subscriptions.english_name"></label>
+  </div>
+
+  <!---------------------------------Value--------------------------------->
+  <div class="form-floating mb-3">
+    <input type="text" class="form-control" id="packagevalue" placeholder="data" formControlName="value" />
+    <label for="packagevalue" translate="subscriptions.value"></label>
+  </div>
+
+  <!---------------------------------number----------------------------------->
+
+
+  <div class="form-floating mb-3">
+    <input type="text" class="form-control" id="packagenumber" placeholder="data" formControlName="number" />
+    <label for="packagenumber" translate="subscriptions.number"></label>
+  </div>
+
+  <!------------------------------------keysEnable---------------------------------->
+  <div class="form-floating mb-3">
+    <input type="text" class="form-control" id="packagekeysEnable" placeholder="data" formControlName="keysEnable" />
+    <label for="packagekeysEnable" translate="subscriptions.enable_service"></label>
+  </div>
+
+
+  <!-- --------------------------------------keysDisable---------------------------------------->
+  <div class="form-floating mb-3">
+    <input type="text" class="form-control" id="packagekeysDisable" placeholder="data" formControlName="keysDisable" />
+    <label for="packagekeysDisable" translate="subscriptions.disable_service"></label>
+  </div>
+
+  <!---------------------------------------blockedService---------------------------------------->
+  
+  <div class="form-floating mb-3">
+    <input type="text" class="form-control" id="packageblockedService" placeholder="data" formControlName="blockedService" />
+    <label for="packageblockedService" translate="subscriptions.blocked_service"></label>
+  </div>
+  
+  <!-------------------------------------cost------------------------------------>
+  <div class="form-floating mb-3">
+    <input type="text" class="form-control" id="packagecost" placeholder="data" formControlName="cost" />
+    <label for="packagecost" translate="subscriptions.cost"></label>
+  </div>
+<!--------------------------------------------------------------------------->
+
+
+<div class="flex-grow-1 d-flex justify-content-end align-items-end gap-2 pb-3">
+    <button type="button" class="btn px-4 rounded-8 btn-light bg-info-o" translate="global.cancel"
+      data-bs-dismiss="offcanvas" (click)="packageForm.reset()"></button>
+    <button type="submit" (click)="update()" class="btn px-4 rounded-8 btn-primary" translate="global.edit"></button>
+  </div>
+
+</form>
+  </app-offcanvas>
+

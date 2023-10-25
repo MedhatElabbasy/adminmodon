@@ -1,0 +1,52 @@
+::ng-deep {
+    .map-container {
+      width: 100% !important;
+      height: 100% !important;
+      border-radius: 0px;
+      border-start-start-radius: 10px;
+      border-start-end-radius: 10px;
+    }
+  }
+  
+  .nav-link {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  
+  .labelClass {
+    text-align: center !important;
+    color: red !important;
+  }
+  
+  .myPadding {
+    padding: 14px 10px;
+  }
+  
+  .myboarder {
+    border-right: solid 10px;
+  
+    border-radius: 5%;
+  
+    h5 {
+      color: #b9b9b9;
+      font-size: 15px;
+    }
+  }
+  
+  .myboarder1 {
+    border-color: #12123C;
+  }
+  
+  .myboarder2 {
+    border-color: #F36E32;
+  }
+  
+  .myboarder3 {
+    border-color: #CECECE;
+  }
+  
+  .myboarder4 {
+    border-color: #8D8DFF;
+  }
+  

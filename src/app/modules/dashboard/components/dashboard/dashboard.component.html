@@ -1,0 +1,194 @@
+
+<div class="row">
+    <div class="col-lg-9">
+
+        <h3 class="my-3" style="font-size:30px; color:#12123C ; font-weight:bold;" translate="dashboard.dashboard"></h3>
+        <div class="row">
+
+            <div class=" col-lg-3 col-sm-4 col-6 mt-3">
+                <div class="dash rounded-12 border-0 p-4" [routerLink]="links.companies"
+                    style="background-color: white; cursor: pointer;">
+                    <img src="assets/images/house.svg" style="background-color: #0080b70f;" class="p-3 rounded-12"
+                        alt="" srcset="" />
+                    <p class="pt-3" style="font-size:12px; color:#8A8AA5"
+                        translate="dashboard.number_of_security_companies"></p>
+                    <div class="dashNumber"><p class="m-0 " style="font-size:22px; color:#12123C ; font-weight:bold;">
+                        {{dashboard?.numberOfSecurityCompany}}</p></div>
+                </div>
+            </div>
+
+            <div class=" col-lg-3 col-sm-4 col-6 mt-3">
+                <div class="dash rounded-12 border-0 p-4" [routerLink]="links.clients"
+                    style="background-color: white; cursor: pointer;">
+                    <img src="assets/images/business-and-trade.svg" style="background-color: #0080b70f;"
+                        class="p-3 rounded-12" alt="" srcset="" />
+                    <p class="pt-3" style="font-size:12px; color:#8A8AA5" translate="dashboard.number_of_buildings"></p>
+                    <div class="dashNumber"><p class="m-0" style="font-size:22px; color:#12123C ; font-weight:bold;">
+                        {{dashboard?.numberOfSites}}</p></div>
+                </div>
+            </div>
+
+            <div class=" col-lg-3 col-sm-4 col-6 mt-3">
+                <div class="dash rounded-12 border-0 p-4" style="background-color: white; ">
+                    <img src="assets/images/project-management.svg" style="background-color: #0080b70f;"
+                        class="p-3 rounded-12" alt="" srcset="" />
+                    <p class="pt-3" style="font-size:12px; color:#8A8AA5" translate="dashboard.number_of_projects"></p>
+                    <div class="dashNumber"><p class="m-0" style="font-size:22px; color:#12123C ; font-weight:bold;">
+                        {{dashboard?.numberOfClients}}</p></div>
+                </div>
+            </div>
+
+            <div class=" col-lg-3 col-sm-4 col-6 mt-3">
+                <div class="dash rounded-12 border-0 p-4" style="background-color: white;">
+                    <img src="assets/images/location.svg" style="background-color: #0080b70f;"
+                        class="p-3 rounded-12" alt="" srcset="" />
+                    <p class="pt-3" style="font-size:12px; color:#8A8AA5" translate="dashboard.number_of_sites"></p>
+                    <div class="dashNumber"><p class="m-0" style="font-size:22px; color:#12123C ; font-weight:bold;">
+                        {{dashboard?.numberOfLocations}}</p></div>
+                </div>
+            </div>
+
+            <div class=" col-lg-3 col-sm-4 col-6 mt-3">
+                <div class="dash rounded-12 border-0 p-4" [routerLink]="links.rasdUsers"
+                    style="background-color: white; cursor: pointer;">
+                    <img src="assets/images/number-rasd.svg" style="background-color: #E321440f;"
+                        class="p-3 rounded-12" alt="" srcset="" />
+                    <p class="pt-3" style="font-size:12px; color:#8A8AA5" translate="dashboard.number_of_rasd_users">
+                    </p>
+                    <div class="dashNumber"><p class="m-0" style="font-size:22px; color:#12123C ; font-weight:bold;">
+                        {{dashboard?.numberOfRasdUsers}}</p></div>
+                </div>
+            </div>
+
+            <div class=" col-lg-3 col-sm-4 col-6 mt-3">
+                <div class="dash rounded-12 border-0 p-4" [routerLink]="links.rasdComplains"
+                    style="background-color: white; cursor: pointer;">
+                    <img src="assets/images/rasd.svg" style="background-color: #0080b70f;" class="p-3 rounded-12"
+                        alt="" srcset="" />
+                    <p class="pt-3" style="font-size:12px; color:#8A8AA5" translate="dashboard.number_of_rasd"></p>
+                    <div class="dashNumber"><p class="m-0" style="font-size:22px; color:#12123C ; font-weight:bold;">
+                        {{dashboard?.numbreOfRasdInfraction}}</p></div>
+                </div>
+            </div>
+
+            <div class=" col-lg-3 col-sm-4 col-6 mt-3">
+                <div class="dash rounded-12 border-0 p-4" [routerLink]="links.contracts"
+                    style="background-color: white; cursor: pointer;">
+                    <img src="assets/images/contracts.svg" style="background-color: #0080b70f;"
+                        class="p-3 rounded-12" alt="" srcset="" />
+                    <p class="pt-3" style="font-size:12px; color:#8A8AA5" translate="dashboard.number_of_contracts"></p>
+                    <div class="dashNumber"><p class="m-0" style="font-size:22px; color:#12123C ; font-weight:bold;">
+                        {{dashboard?.numberOfContract}}</p></div>
+                </div>
+            </div>
+
+        </div>
+        <div class="card rounded-12 border-0 mt-5 p-3">
+            <p class="my-2" style="font-size:18px; color:#12123C; display:inline; font-weight:bold;"
+                translate="dashboard.number_of_guards">{{dashboard?.numberOfGuards}}</p>
+            <div class="row">
+                <div class="col-md-4 mx-2">
+                    <div class="rounded-12 border-0 p-3" style="background-color: #0080b70f;">
+                        <div class="row">
+                            <div class="col-4 d-flex align-items-center px-0">
+                                <img src="assets/images/male-guard.svg" style="background-color:white;"
+                                    class="p-3 rounded-12" alt="" srcset="" />
+                            </div>
+                            <div class="col-6 px-1 m-auto">
+                                <p class="m-0" style="font-size:12px; color:#8A8AA5"
+                                    translate="dashboard.number_of_men_gurads"></p>
+                                <p class="m-0" style="font-size:22px; color:#12123C ; font-weight:bold;">
+                                    {{dashboard?.numberOfGuardsMale}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mx-2 female">
+                    <div class="rounded-12 border-0 p-3" style="background-color: #0080b70f;">
+                        <div class="row">
+                            <div class="col-4 d-flex align-items-center px-0">
+                                <img src="assets/images/femail-guard.svg" style="background-color:white;"
+                                    class="p-3 rounded-12" alt="" srcset="" />
+                            </div>
+                            <div class="col-6 px-1 m-auto">
+                                <p class="m-0" style="font-size:12px; color:#8A8AA5"
+                                    translate="dashboard.number_of_women_guards"></p>
+                                <p class="m-0" style="font-size:22px; color:#12123C ; font-weight:bold;">
+                                    {{dashboard?.numberOfGuardsFemale}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card rounded-12 border-0 mt-5 p-3">
+            <p class="my-2" style="font-size:18px; color:#12123C ; font-weight:bold;"
+                translate="dashboard.number_of_supervisors">{{numberOfSuperVisors}}</p>
+            <div class="row">
+                <div class="col-md-4 mx-2">
+                    <div class="rounded-12 border-0 p-3" style="background-color: #0080b70f;">
+                        <div class="row">
+                            <div class="col-4 d-flex align-items-center px-0">
+                                <img src="assets/images/male-supervisor.svg" style="background-color:white;"
+                                    class="p-3 rounded-12" alt="" srcset="" />
+                            </div>
+                            <div class="col-6 px-1">
+                                <p class="m-0" style="font-size:12px; color:#8A8AA5"
+                                    translate="dashboard.number_of_men_supervisors"></p>
+                                <p class="m-0" style="font-size:22px; color:#12123C ; font-weight:bold;">
+                                    {{dashboard?.numberOfSupervisorMale}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mx-2 female">
+                    <div class="rounded-12 border-0 p-3" style="background-color: #0080b70f;">
+                        <div class="row">
+                            <div class="col-4 d-flex align-items-center px-0">
+                                <img src="assets/images/female-supervisor.svg" style="background-color:white;"
+                                    class="p-3 rounded-12" alt="" srcset="" />
+                            </div>
+                            <div class="col-6 px-1">
+                                <p class="m-0" style="font-size:12px; color:#8A8AA5"
+                                    translate="dashboard.number_of_women_supervisors"></p>
+                                <p class="m-0" style="font-size:22px; color:#12123C ; font-weight:bold;">
+                                    {{dashboard?.numberOfSupervisorFemale}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+    <!-- <div class="col-lg-4 align-items-end main">
+        <h3 class="my-3" style="font-size:30px; color:#12123C ; font-weight:bold;" translate="dashboard.lastActivity"></h3>
+        <hr>
+        <div class="search-results-container" [scrollWindow]="false" infiniteScroll
+            [infiniteScrollDistance]="scrollDistance" [infiniteScrollUpDistance]="scrollUpDistance"
+            [infiniteScrollThrottle]="throttle" (scrolled)="onScrollDown()">
+            <div class="container">
+                <div class="row">
+                    <div *ngFor="let notify of AllNotify;let i=index">
+                        <div class="cardd mt-1">
+                            <div class="row">
+                                <div class="col-3 m-auto"><img src="assets/images/notifications/{{notify.notificationType}}.svg" alt="notification"/></div>
+                                <div class="col-9"><h5 class="title text-muted" style="font-size: 12px; margin:auto;">{{notify.created.slice(11,16)}}</h5> <p>{{notify.description}}</p>
+                                <h5 class="title text-muted" style="font-size: 12px;">{{notify.created.split(" ")[0]}}</h5>
+                            </div>
+                            </div>
+                            <div class="body">
+                               
+                                <hr>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="loading" class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
+                </div>
+            </div>
+        </div>
+    </div> -->
+
+</div>

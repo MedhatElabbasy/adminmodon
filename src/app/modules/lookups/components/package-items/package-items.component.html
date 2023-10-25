@@ -1,0 +1,242 @@
+<h3 class="my-3 d-block">{{"sidebar.Package_Items"| translate}}</h3>
+<button type="button" class="btn btn-primary d-block mis-auto px-4 rounded-8 mb-3 d-flex gap-2 align-items-center"
+  (click)="add()">
+  <ion-icon name="add"></ion-icon>
+  {{ "global.add" | translate }}
+</button>
+
+<div class="card rounded-12 border-0 mt-2">
+    <div class="card-body">
+      <header class="d-flex gap-3 flex-wrap justify-content-between align-items-center">
+        <div class="col-12 col-sm-4">
+          <div class="input-group">
+            <span class="input-group-text border-0 bg-transparent" id="search">
+              <ion-icon name="search"></ion-icon>
+            </span>
+            <input [(ngModel)]="searchKey" type="text" class="form-control" [placeholder]="'global.search' | translate"
+              aria-label="search" aria-describedby="search" />
+          </div>
+        </div>
+  
+        <div class="d-flex col-12 col-sm justify-content-between justify-content-sm-end gap-3">
+          <button  class="btn rounded-m rounded-8 btn-primary d-flex gap-2 align-items-center" (click)="clear()"  type="button">
+        
+            {{ "global.clear"| translate }}
+          </button>
+          <div class="dropdown">
+            <button  class="btn d-flex text-info gap-2 align-items-center rounded-m rounded-8 bg-info-o  dropdown-toggle"  type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+              {{ "global.order_by" | translate }}
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+              <li class="dropdown-item" (click)="fromAtoZ()">{{"global.ascending"| translate}}</li>
+              <li class="dropdown-item" (click)="fromZtoA()">{{"global.descending"| translate}}</li>
+            </ul>
+          </div>
+          <div class="dropdown menue2">
+            <!-- <button  class="btn rounded-m rounded-8 btn-primary d-flex gap-2 align-items-center  dropdown-toggle "  type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
+              <i class="fa-solid fa-sliders"></i>
+              {{ "global.filtration" | translate }}
+            </button> -->
+          
+          </div>
+        </div>
+      </header>
+  
+      <hr />
+  
+      <div class="table-responsive">
+        <table class="table table-striped table-borderless">
+          <thead>
+            <tr>
+              <th scope="col" translate="global.name"></th>
+              <th scope="col" translate="التكلفه"></th>
+              
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="
+                let packageItem of packageItems
+                  | filter: searchKey
+                  | paginate
+                    : {
+                        itemsPerPage: pageSize,
+                        currentPage: pageNumber,
+                        totalItems: total,
+                        id: 'packageItem'
+                      }
+              ">
+             
+              <td>
+                {{
+                  (lang.isAr | async)
+                    ? packageItem.itemName
+                    : packageItem.itemNameEn
+                }}
+              </td>
+              <td>
+                {{packageItem.cost}}
+              </td>
+              <td>
+                
+                  <div class="d-flex gap-2 justify-content-end">
+                    <button (click)="edit(packageItem)" type="button" class="btn rounded-8 bg-primary-hover text-white edit">
+                      <i class="fa-solid fa-pen"></i>
+                    </button>
+                    <button (click)="exist(packageItem)" type="button"
+                      class="btn text-white rounded-8 bg-danger-hover delete">
+                      <i class="fa-solid fa-trash"></i>
+                    </button>
+                  </div>
+              </td>
+            </tr>
+            <tr *ngIf="!packageItems?.length">
+              <td colspan="7">
+                <h6
+                  translate="global.no_data_to_show"
+                  class="fw-600 text-danger text-align-center"
+                ></h6>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+  
+      <hr />
+  
+      <div class="d-flex align-items-center justify-content-between gap-3">
+        <div class="text-info d-flex gap-3 align-items-center">
+          <label class="fw-500" translate="global.for_page"></label>
+          <div>
+            <select class="form-select" (change)="onPageSizeChange($event)">
+              <option *ngFor="let size of sizes" [selected]="size == pageSize">
+                {{ size }}
+              </option>
+            </select>
+          </div>
+        </div>
+  
+        <pagination-controls id="packageItem" (pageChange)="onPageChange($event)" (pageBoundsCorrection)="onPageChange($event)"
+          [maxSize]="5" [responsive]="true" [previousLabel]="''" [nextLabel]="''" screenReaderPaginationLabel="Pagination"
+          screenReaderPageLabel="page" screenReaderCurrentLabel="You're on page">
+        </pagination-controls>
+      </div>
+    </div>
+  </div>
+  
+  <!-- ------------------------------- delete -------------------------------- -->
+  <app-modal classList="modal-dialog-centered" [id]="modalID">
+    <img src="assets/images/svgs/delete.svg" alt="" srcset="" />
+    <h4 class="fw-700" translate="lookups.are_you_sure_about_deleting_packageItems"></h4>
+    <p class="mt-2 text-info" translate="global.cancel_this_operation"></p>
+  
+    <div class="d-flex justify-content-end gap-2">
+      <button type="button" class="btn rounded-8 px-4 py-2 btn-light" translate="global.cancel"
+        (click)="closeModal(modalID)"></button>
+      <button translate="global.yes_delete" type="button" class="btn rounded-8 px-4 py-2 btn-danger"
+        (click)="onDelete()"></button>
+    </div>
+  </app-modal>
+  <!------------------------AddPackageItem---------------------->
+  <app-offcanvas [id]="canvasID">
+    <h3 translate="إضافة باقه" class="text-align-center fw-bold"></h3>
+    <form [formGroup]="packageForm" #form="ngForm" 
+    class="d-flex flex-column gap-3 h-100 p-1 overflow-visible">
+
+
+  <!-----------------------------arabicName--------------------------------->
+
+  <div class="form-floating mb-3">
+    <input type="text" class="form-control" id="arabicName" placeholder="data" formControlName="itemName" />
+    <label for="arabicName" translate="الاسم عربي"></label>
+  </div>
+  <div *ngIf="form.submitted && packageForm.controls['itemName']?.errors?.['required']" class="error-message"
+              [innerHtml]="'settings.arabicName_required' | translate"></div>
+              <div *ngIf="form.submitted && packageForm.controls['itemName']?.errors?.['pattern']" class="error-message"
+  [innerHtml]="'settings.arabicName_invalid' | translate"></div>
+
+  <!----------------------------englishName------------------------------->
+
+  <div class="form-floating mb-3">
+    <input type="text" class="form-control" id="englishName" placeholder="data" formControlName="itemNameEn" />
+    <label for="englishName" translate="الاسم الانجليزي"></label>
+  </div>
+  <div *ngIf="form.submitted && packageForm.controls['itemNameEn']?.errors?.['required']" class="error-message"
+  [innerHtml]="'settings.englishName_required' | translate"></div>
+  <div *ngIf="form.submitted && packageForm.controls['itemNameEn']?.errors?.['pattern']" class="error-message"
+  [innerHtml]="'settings.englishName_invalid' | translate"></div>
+
+  <!---------------------------------Value--------------------------------->
+  <div class="form-floating mb-3">
+    <input type="number" class="form-control" id="packagevalue" placeholder="data" formControlName="value" />
+    <label for="packagevalue" translate="القيمه"></label>
+  </div>
+  <div *ngIf="form.submitted && packageForm.controls['value']?.errors?.['required']" class="error-message"
+  [innerHtml]="'settings.packageValue_required' | translate"></div>
+  <div *ngIf="form.submitted && packageForm.controls['value']?.errors?.['pattern']" class="error-message"
+  [innerHtml]="'settings.packageValue_invalid' | translate"></div>
+
+  <!---------------------------------number----------------------------------->
+
+
+  <div class="form-floating mb-3">
+    <input type="number" class="form-control" id="packagenumber" placeholder="data" formControlName="number" />
+    <label for="packagenumber" translate="الرقم"></label>
+  </div>
+  <div *ngIf="form.submitted && packageForm.controls['number']?.errors?.['required']" class="error-message"
+  [innerHtml]="'settings.packageNumber_required' | translate"></div>
+  <div *ngIf="form.submitted && packageForm.controls['number']?.errors?.['pattern']" class="error-message"
+  [innerHtml]="'settings.packageNumber_invalid' | translate"></div>
+  <!------------------------------------keysEnable---------------------------------->
+  <div class="form-floating mb-3">
+    <input type="text" class="form-control" id="packagekeysEnable" placeholder="data" formControlName="keysEnable" />
+    <label for="packagekeysEnable" translate="الخدمات المفعله"></label>
+  </div>
+  <div *ngIf="form.submitted && packageForm.controls['keysEnable']?.errors?.['required']" class="error-message"
+  [innerHtml]="'settings.keysEnable_required' | translate"></div>
+  <div *ngIf="form.submitted && packageForm.controls['keysEnable']?.errors?.['pattern']" class="error-message"
+  [innerHtml]="'settings.keysEnable_invalid' | translate"></div>
+
+
+  <!-- --------------------------------------keysDisable---------------------------------------->
+  <div class="form-floating mb-3">
+    <input type="text" class="form-control" id="packagekeysDisable" placeholder="data" formControlName="keysDisable" />
+    <label for="packagekeysDisable" translate="الخدمات الغير مفعله"></label>
+  </div>
+   <div *ngIf="form.submitted && packageForm.controls['keysDisable']?.errors?.['required']" class="error-message"
+  [innerHtml]="'settings.keysDisable_required' | translate"></div>
+  <div *ngIf="form.submitted && packageForm.controls['keysDisable']?.errors?.['pattern']" class="error-message"
+  [innerHtml]="'settings.keysDisable_invalid' | translate"></div>
+
+  <!---------------------------------------blockedService---------------------------------------->
+  
+  <div class="form-floating mb-3">
+    <input type="text" class="form-control" id="packageblockedService" placeholder="data" formControlName="blockedService" />
+    <label for="packageblockedService" translate="الخدمات المحظورة"></label>
+  </div>
+  <div *ngIf="form.submitted && packageForm.controls['blockedService']?.errors?.['required']" class="error-message"
+  [innerHtml]="'settings.blockedService_required' | translate"></div>
+  <div *ngIf="form.submitted && packageForm.controls['blockedService']?.errors?.['pattern']" class="error-message"
+  [innerHtml]="'settings.blockedService_invalid' | translate"></div>
+  
+  <!-------------------------------------cost------------------------------------>
+  <div class="form-floating ">
+    <input type="number" class="form-control" id="packagecost" placeholder="data" formControlName="cost" />
+    <label for="packagecost" translate="السعر"></label>
+  </div>
+  <div *ngIf="form.submitted && packageForm.controls['cost']?.errors?.['required']" class="error-message"
+  [innerHtml]="'settings.cost_required' | translate"></div>
+  <div *ngIf="form.submitted && packageForm.controls['cost']?.errors?.['pattern']" class="error-message"
+  [innerHtml]="'settings.cost_invalid' | translate"></div>
+<!--------------------------------------------------------------------------->
+
+
+<div class="flex-grow-1 d-flex justify-content-end align-items-end gap-2 pb-3">
+    <button type="button" class="btn px-4 rounded-8 btn-light bg-info-o" translate="global.cancel"
+      data-bs-dismiss="offcanvas" (click)="packageForm.reset()"></button>
+    <button type="submit" *ngIf="id==null" (click)="addPackage()" class="btn px-4 rounded-8 btn-primary" translate="global.add"></button>
+    <button type="submit" *ngIf="id!=null" (click)="update()" class="btn px-4 rounded-8 btn-primary" translate="global.edit"></button>
+  </div>
+
+</form>
+  </app-offcanvas>
+

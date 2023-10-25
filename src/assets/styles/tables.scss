@@ -1,0 +1,39 @@
+@import "src/assets/styles/variables.scss";
+
+thead {
+  th {
+    font-weight: 700;
+    font-size: large;
+  }
+
+  & > tr {
+    td,
+    th {
+      padding: 0.7em !important;
+    }
+  }
+}
+
+tbody {
+  & > tr {
+    td,
+    th {
+      padding: 0.7em !important;
+    }
+
+    & > td:first-child,
+    & > th:first-child {
+      border-start-start-radius: 8px !important;
+      border-end-start-radius: 8px !important;
+    }
+
+    & > td:last-child {
+      border-start-end-radius: 8px !important;
+      border-end-end-radius: 8px !important;
+    }
+  }
+}
+
+.table-striped > tbody > tr:nth-of-type(odd) > * {
+  background-color: #f7f6fb;
+}

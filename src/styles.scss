@@ -1,0 +1,71 @@
+/* You can add global styles to this file, and also import other style files */
+@import "../node_modules/primeicons/primeicons.css";
+@import "../node_modules/primeng/resources/themes/lara-light-blue/theme.css";
+@import "../node_modules/primeng/resources/primeng.min.css";
+@import "~assets/styles/default";
+@import "node_modules/bootstrap/scss/bootstrap";
+@import "~assets/styles/forms";
+@import "~assets/styles/tables.scss";
+@import "~assets/styles/pagination.scss";
+@import "~assets/styles/popups.scss";
+@import "~assets/styles/typography.scss";
+
+/* autoprefixer: off */
+
+.form-floating>.form-control:not(:placeholder-shown)~label {
+    color: black !important;
+}
+
+input::placeholder {
+    color: #000 !important;
+    /* Use the color value you prefer */
+}
+
+table {
+
+    .bg-primary-hover,
+    .bg-danger-hover {
+        color: black !important;
+    }
+
+    .bg-primary-hover,
+    .bg-danger-hover {
+        &:hover {
+            color: white !important;
+        }
+    }
+}
+
+.ngx-pagination {
+    li {
+        border: 1px solid #84BC26 !important;
+
+        a * {
+            color: #000 !important;
+        }
+    }
+
+    .pagination-previous,
+    .pagination-next {
+        border: none !important;
+    }
+}
+
+.form-floating {
+    label {
+
+        color: black !important;
+    }
+
+    input::placeholder {
+        color: #f3f3f6 !important;
+    }
+}
+
+#dropdownMenuButton1{
+    color: black !important;
+}
+
+.otp-input{
+    border: 1px solid #091030 !important;
+}

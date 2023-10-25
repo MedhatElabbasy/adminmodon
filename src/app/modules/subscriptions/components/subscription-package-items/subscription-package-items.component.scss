@@ -1,0 +1,6 @@
+.bg-primary-hover,
+.bg-danger-hover {
+    &:hover {
+        color: white !important;
+    }
+}

@@ -1,0 +1,224 @@
+<h2 class="fw-700 mt-0" translate="global.settings"></h2>
+
+<div class="mt-4">
+  <div class="row g-4">
+    <div class="col-lg-4">
+      <div class="card border-0 rounded-16 h-100">
+        <div class="card-body h-100">
+          <div class="d-flex flex-column h-100">
+            <div
+              class="d-flex justify-content-between gap-3 align-items-center flex-wrap"
+            >
+              <h4 class="m-0 fw-600">
+                {{ "settings.profile_personly" | translate }}
+              </h4>
+              <button
+                (click)="onEdit()"
+                id="edit"
+                type="button"
+                class="btn text-white btn-info"
+              >
+                <i class="fa-solid fa-pen"></i>
+              </button>
+            </div>
+            <hr />
+            <div id="profile-grid" class="flex-grow-1">
+              <div
+                id="info"
+                class="d-flex gap-3 flex-row flex-wrap flex-lg-column"
+              >
+                <img
+                  [src]="user?.photo?.fullLink"
+                  onerror="this.src='assets/images/icons/person.png'"
+                  class="avatar obj-cover mb-4 mb-md-2 d-block"
+                  alt="profile image"
+                />
+                <div class="text-wrap col">
+                  <h4 class="mb-2 mt-0 fw-600">
+                    {{ user?.firstName }} {{user?.middleName}} {{ user?.lastName }}
+                  </h4>
+
+                  <p class="mb-2 text-info text-wrap">{{ user?.email }}</p>
+                  <p class="mb-2 text-info">{{ user?.mobileNumber }}</p>
+                </div>
+              </div>
+              <!-- <div id="password">
+                <a class="text-info text-decoration-none c-pointer">{{
+                  "settings.change_password" | translate
+                }}</a>
+              </div> -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-8">
+      <div class="card h-100 border-0 rounded-16">
+        <div class="card-body">
+          <div class="h-32px d-flex align-items-center">
+            <h4 class="m-0 fw-600">
+              {{ "settings.manage_notifications" | translate }}
+            </h4>
+          </div>
+          <hr />
+          <ul class="list-group">
+            <li
+              class="list-group-item align-items-startalign-items-md-center bg-info-o d-flex justify-content-between"
+            >
+              {{ "settings.register_company" | translate }}
+              <p-inputSwitch></p-inputSwitch>
+            </li>
+            <li
+              class="list-group-item align-items-start align-items-md-center d-flex justify-content-between"
+            >
+              {{ "settings.add_company" | translate }}
+              <p-inputSwitch></p-inputSwitch>
+            </li>
+            <li
+              class="list-group-item align-items-start align-items-md-center bg-info-o d-flex justify-content-between"
+            >
+              {{ "settings.new_contract" | translate }}
+              <p-inputSwitch></p-inputSwitch>
+            </li>
+            <li
+              class="list-group-item align-items-startalign-items-md-center d-flex justify-content-between"
+            >
+              {{ "settings.update_contract" | translate }}
+              <p-inputSwitch></p-inputSwitch>
+            </li>
+            <li
+              class="list-group-item align-items-start align-items-md-center bg-info-o d-flex justify-content-between"
+            >
+              {{ "settings.changepassword" | translate }}
+
+              <p-inputSwitch></p-inputSwitch>
+            </li>
+            <li
+              class="list-group-item align-items-start align-items-md-center d-flex justify-content-between"
+            >
+              {{ "settings.expiration_date" | translate }}
+              <p-inputSwitch></p-inputSwitch>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-offcanvas [id]="canvasId">
+  <div class="py-4">
+    <form [formGroup]="userForm" #form="ngForm" (keydown.enter)="$event.preventDefault()" (ngSubmit)="update(userForm)">
+  <h3 class="text-align-center fw-600" translate="global.update_profile"></h3>
+
+          <!--? -------------------------------- logo --------------------------------- -->
+          <div class="mb-3">
+            <div class="file bg-info-o rounded-8 text-info py-3" [style.backgroundImage]="'url(' + profileImage + ')'"
+              (change)="onImageUpload($event)" (click)="personImage.click()">
+              <input type="file" #personImage hidden accept="image/x-png,image/gif,image/jpeg" />
+              <div class="container row" *ngIf="!profileImage">
+                <img src="../../../../../assets/images/Group577.png" class="col-6" style="width:120px; height:100px;" />
+                <div class="fs-14 mt-3 col-6">
+                  {{ "settings.click_to_upload_profile_image" | translate }}
+                </div>
+              </div>
+            </div>
+    
+            <div class="error-message" *ngIf="controls['photoId']?.errors?.required && form.submitted"
+              [innerHtml]="'settings.image_required' | translate"></div>
+    
+          </div>
+
+
+           <!--? -------------------------------- Firstname --------------------------------- -->
+      <div class="mb-3 row">
+        <div class="form-floating col-4">
+          <div class="form-floating">
+            <input type="text" formControlName="firstName" class="form-control" id="firstName" placeholder="data" />
+            <label style="padding-right: 5px;" for="firstName" translate="settings.firstName"></label>
+            <div *ngIf="form.submitted &&  controls['firstName']?.errors?.required" class="error-message"
+              [innerHtml]="'settings.first_name_required' | translate"></div>
+
+            <div *ngIf="form.submitted &&  controls['firstName']?.errors?.pattern" class="error-message">
+              <i class="fa-sharp fa-solid fa-circle-exclamation"></i>
+              {{ 'settings.not_valid_to_use' | translate }}
+            </div>
+
+
+          </div>
+        </div>
+        <!--------------------------------------middleName------------------------------------->
+        <div class="form-floating col-4">
+          <input type="text" formControlName="middleName" class="form-control" id="middleName" placeholder="data" />
+          <label for="middleName" translate="settings.middle_name"></label>
+
+          <!-- <div *ngIf=" form.submitted && controls['middleName']?.errors?.required" class="error-message"
+            [innerHtml]="'settings.middle_name_required' | translate"></div>
+
+          <div *ngIf="form.submitted && controls['middleName']?.errors?.pattern" class="error-message">
+            <i class="fa-sharp fa-solid fa-circle-exclamation"></i>
+            {{ 'settings.not_valid_to_use' | translate }}
+
+
+          </div> -->
+        </div>
+
+        <!--------------------------------------lastName------------------------------------->
+        <div class="form-floating col-4">
+          <input type="text" formControlName="lastName" class="form-control" id="lastName" placeholder="data" />
+          <label for="lastName" translate="settings.lastName"></label>
+          <div *ngIf="form.submitted && controls['lastName']?.errors?.required" class="error-message"
+            [innerHtml]="'settings.last_name_required' | translate"></div>
+          <div *ngIf="form.submitted && controls['lastName']?.errors?.pattern" class="error-message">
+            <i class="fa-sharp fa-solid fa-circle-exclamation"></i>
+            {{ 'settings.not_valid_to_use' | translate }}
+          </div>
+        </div>
+
+
+
+      </div>
+
+      <!---------------------------phonenumber-------------------------------------->
+
+      <div class="mb-3">
+        <div id="mobile" class="form-floating">
+          <div class="form-control d-flex">
+            <div type="text" id="phone"  class="form-control rounded-0 col p-0"  >
+            {{controls['mobileNumber'].value}}
+            </div>
+          </div>
+          <label for="phone">
+            {{ "settings.mobile_number" | translate }}
+          </label>
+        </div>
+
+        
+          <div class="error-message" *ngIf="controls['mobileNumber']?.errors?.required && form.submitted"
+            [innerHtml]="'settings.phone_required' | translate"></div>
+        </div>
+      
+
+        <!--? -------------------------------- Email --------------------------------- -->
+        <div class="mb-3">
+          <div class="form-floating">
+            <input type="email" class="form-control" id="Email" placeholder="Email" formControlName="email" />
+            <label for="Email">
+              {{ "settings.email" | translate }}
+            </label>
+          </div>
+  
+          <div class="error-message" *ngIf="form.submitted && controls['email']?.errors?.required"
+            [innerHtml]="'settings.email_required' | translate"></div>
+          <div class="error-message" *ngIf="form.submitted && controls['email']?.errors?.email"
+            [innerHtml]="'settings.email_invalid' | translate"></div>
+  
+        </div>
+        <div class="d-flex gap-2 justify-content-end mt-4">
+          <button type="reset" data-bs-dismiss="offcanvas" class="btn bg-info-o text-primary rounded-10"
+            translate="settings.cancel" (click)="reset()"></button>
+          <button type="submit" class="btn btn-primary rounded-10" translate="settings.edit"></button>
+        </div>
+    </form>
+  </div>
+</app-offcanvas>

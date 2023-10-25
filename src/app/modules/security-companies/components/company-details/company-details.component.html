@@ -1,0 +1,505 @@
+<div class="row g-4">
+  <div class="col-lg-4">
+    <div class="card border-0 rounded-12 overflow-hidden">
+      <header class="bg-pattern">
+        <div class="d-flex h-100 px-3 justify-content-between align-items-end">
+          <img
+            [src]="data.companyLogo.fullLink"
+            width="100"
+            height="100"
+            class="obj-fill rounded-16 logo"
+          />
+          <div class="social py-3">
+            <a [href]="data.website" target="_blank" rel="website">
+              <ion-icon name="globe-outline"></ion-icon>
+            </a>
+            <a [href]="data.socialMediaLink" target="_blank" rel="instagram">
+              <ion-icon name="logo-instagram"></ion-icon>
+            </a>
+            <a [href]="data.socialMediaLink2" target="_blank" rel="facebook">
+              <ion-icon name="logo-facebook"></ion-icon>
+            </a>
+          </div>
+        </div>
+      </header>
+      <div class="card-body">
+        <h4 class="fw-bold mt-3 text-primary">{{ data.name }}</h4>
+        <ul class="list-group">
+          <li
+            class="list-group-item d-flex gap-3 p-0 border-0 justify-content-between align-items-start"
+          >
+            <div class="d-flex align-items-start gap-2 text-info">
+              <i class="fa-solid fa-location-dot mt-1"></i>
+              <span> {{ data.address }}</span>
+            </div>
+            <p-inputSwitch (click)="$event.stopPropagation()"
+            [(ngModel)]="data.isActive"
+            (onChange)="toggleState(data.id, $event)"></p-inputSwitch>
+          </li>
+        </ul>
+
+        <hr class=" d-block" />
+        <div class=" d-block">
+          <h6
+            translate="companies.about_company"
+            class="fw-600 text-primary"
+          ></h6>
+          <p>
+            {{ data.businessDescription }}
+          </p>
+
+          <ul class="fs-6">
+            <li>
+              <label
+                class="text-info d-inline-block mie-1"
+                translate="companies.business_type"
+              >
+              </label>
+              <span class="d-inline-block">
+                {{
+                  (isAr | async)
+                    ? data.businessType?.name
+                    : data.businessType?.nameEN
+                }}
+              </span>
+            </li>
+            <li>
+              <label
+                class="text-info d-inline-block mie-1"
+                translate="companies.business_start_date"
+              >
+              </label>
+              <span class="d-inline-block">{{ data.companyStartDate }}</span>
+            </li>
+            <li>
+              <label
+                class="text-info d-inline-block mie-1"
+                translate="global.email"
+              >
+              </label>
+              <span class="d-inline-block">{{ data.email }}</span>
+            </li>
+            <li>
+              <label
+                class="text-info d-inline-block mie-1"
+                translate="global.contact_number"
+              ></label>
+              <span class="d-inline-block">
+                {{ data.companyContactNumber }}
+              </span>
+            </li>
+            <li>
+              <label
+                class="text d-inline-block mie-1"
+                translate="global.profilelink"
+              ></label>
+              <a [href]="data.idProof.fullLink" target="_blank" style="text-decoration: none;" translate="global.View"></a>
+            </li>
+            <li>
+              <label
+                class="text d-inline-block mie-1"
+                translate="global.commercialRegister"
+              ></label>
+              <a [href]="data.commercialRegister.fullLink" target="_blank" style="text-decoration: none;" translate="global.View"></a>
+            </li>
+
+            <li *ngIf="data.licenseNumber">
+              <label
+              class="text-info d-inline-block mie-1"
+              translate="global.licenseNumber"
+            ></label>
+            <span class="d-inline-block">
+              {{ data.licenseNumber }}
+            </span>  
+            </li>
+            <li *ngIf="data.licenseEndDate">
+              <label
+              class="text-info d-inline-block mie-1"
+              translate="global.licenseEndDate"
+            ></label>
+            <span class="d-inline-block">
+              {{ data.licenseEndDate.substring(0,10) }}
+            </span>  
+            </li>
+            <li *ngIf="data.licenseImage">
+              <label
+                class="text d-inline-block mie-1"
+                translate="global.licenseImage"
+              ></label>
+              <a [href]="data.licenseImage" target="_blank" style="text-decoration: none;" translate="global.View"></a>
+            </li>
+          </ul>
+
+          <h6 class="fw-600" translate="companies.company_services"></h6>
+          <div
+            *ngIf="data.securitCompanyAvailableServices"
+            class="d-flex flex-wrap gap-2"
+          >
+            <div
+              class="services text-white bg-warning w-fit py-1 px-2 rounded-10"
+              *ngFor="let service of data.securitCompanyAvailableServices"
+            >
+              {{
+                (isAr | async)
+                  ? service.availableServices.name
+                  : service.availableServices.nameEN
+              }}
+            </div>
+          </div>
+
+          <div
+            *ngIf="!data.securitCompanyAvailableServices"
+            class="fw-500 text-danger"
+            translate="global.no_data_to_show"
+          ></div>
+
+          <div class="card mt-3 border-0 bg-info-o rounded-10">
+            <div class="card-body">
+              <div class="d-flex align-items-center">
+                <div class="flex-shrink-0">
+                  <div class="bank-icon">
+                    <i class="fa-solid fa-building-columns"></i>
+                  </div>
+                </div>
+                <div class="flex-grow-1 mis-3">
+                  <h6 class="mt-0 fw-600">{{ data.bankName }}</h6>
+                  <p class="m-0" dir="ltr">
+                    {{ data.iban }}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card bg-pattern-auto border-0 text-white rounded-10 mt-5">
+            <span
+              class="badge text-white bg-primary rounded-8 px-4 position-absolute mis-3 trans-top w-fit"
+              translate="companies.owner"
+            ></span>
+            <div class="card-body">
+              <div class="d-flex">
+                <div class="flex-shrink-0">
+                  <img
+                    [src]="data.profileImage.fullLink"
+                    width="70"
+                    height="70"
+                    title=""
+                    class="obj-cover obj-position-c rounded-10"
+                  />
+                </div>
+                <div class="flex-grow-1 mis-3">
+                  <h6 class="mt-0 mb-1 fw-500">
+                    {{ data.firstName }} {{ data.lastName }}
+                  </h6>
+                  <p
+                    class="d-flex m-0 text-info gap-2 align-items-start"
+                    style="word-break: break-all"
+                  >
+                    <i class="fa-solid fa-envelope mt-1"></i>
+                    {{ data.email }}
+                  </p>
+                  <p
+                    class="d-flex text-info gap-2 m-0 align-items-start flex-wrap"
+                  >
+                    <i class="fa-solid fa-phone-flip mt-1"></i>
+                    {{data.companyContactNumber}}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="d-block d-lg-none">
+          <!-- Nav tabs -->
+          <div>
+            <ul
+              class="nav nav-tabs text-nowrap flex-nowrap rounded-0 p-0"
+              id="comapany"
+              role="tablist"
+              style="overflow-x: auto; overflow-y: hidden"
+            >
+              <li class="nav-item" role="presentation">
+                <button
+                  translate="companies.about_company"
+                  class="nav-link active"
+                  id="business-desc-tab"
+                  data-bs-toggle="tab"
+                  data-bs-target="#business-desc"
+                  type="button"
+                  role="tab"
+                  aria-controls="business-desc"
+                  aria-selected="true"
+                ></button>
+              </li>
+              <li class="nav-item" role="presentation">
+                <button
+                  translate="companies.company_info"
+                  class="nav-link"
+                  id="businees-details-tab"
+                  data-bs-toggle="tab"
+                  data-bs-target="#businees-details"
+                  type="button"
+                  role="tab"
+                  aria-controls="businees-details"
+                  aria-selected="false"
+                ></button>
+              </li>
+              <li class="nav-item" role="presentation">
+                <button
+                  translate="companies.company_services"
+                  class="nav-link"
+                  id="services-tab"
+                  data-bs-toggle="tab"
+                  data-bs-target="#services"
+                  type="button"
+                  role="tab"
+                  aria-controls="services"
+                  aria-selected="false"
+                ></button>
+              </li>
+              <li class="nav-item" role="presentation">
+                <button
+                  translate="companies.bank_details"
+                  class="nav-link"
+                  id="bank-tab"
+                  data-bs-toggle="tab"
+                  data-bs-target="#bank"
+                  type="button"
+                  role="tab"
+                  aria-controls="bank"
+                  aria-selected="false"
+                ></button>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Tab panes -->
+          <div class="tab-content">
+            <div
+              class="tab-pane active"
+              id="business-desc"
+              role="tabpanel"
+              aria-labelledby="business-desc-tab"
+            >
+              <p class="mt-3">
+                {{ data.businessDescription }}
+              </p>
+            </div>
+            <div
+              class="tab-pane"
+              id="businees-details"
+              role="tabpanel"
+              aria-labelledby="businees-details-tab"
+            >
+              <ul class="fs-6 mt-3">
+                <li>
+                  <label
+                    class="text-info d-inline-block mie-1"
+                    translate="companies.business_type"
+                  >
+                  </label>
+                  <span class="d-inline-block">
+                    {{ data?.businessType?.name }}
+                  </span>
+                </li>
+                <li>
+                  <label
+                    class="text-info d-inline-block mie-1"
+                    translate="companies.business_start_date"
+                  >
+                  </label>
+                  <span class="d-inline-block">
+                    {{ data.companyStartDate }}
+                  </span>
+                </li>
+                <li>
+                  <label
+                    class="text-info d-inline-block mie-1"
+                    translate="global.email"
+                  >
+                  </label>
+                  <span class="d-inline-block">
+                    {{ data.email }}
+                  </span>
+                </li>
+                <li>
+                  <label
+                    class="text-info d-inline-block mie-1"
+                    translate="global.contact_number"
+                  ></label>
+                  <span class="d-inline-block">
+                    {{ data.companyContactNumber }}
+                  </span>
+                </li>
+              </ul>
+            </div>
+            <div
+              class="tab-pane"
+              id="services"
+              role="tabpanel"
+              aria-labelledby="services-tab"
+            >
+              <div class="pt-3">
+                <div
+                  *ngIf="data.securitCompanyAvailableServices"
+                  class="d-flex flex-wrap gap-2"
+                >
+                  <div
+                    class="services text-white bg-warning w-fit py-1 px-2 rounded-10"
+                    *ngFor="let service of data.securitCompanyAvailableServices"
+                  >
+                    {{
+                      (isAr | async)
+                        ? service.availableServices.name
+                        : service.availableServices.nameEN
+                    }}
+                  </div>
+                </div>
+
+                <div
+                  *ngIf="!data.securitCompanyAvailableServices"
+                  class="fw-500 text-danger"
+                  translate="global.no_data_to_show"
+                ></div>
+              </div>
+            </div>
+            <div
+              class="tab-pane"
+              id="bank"
+              role="tabpanel"
+              aria-labelledby="bank-tab"
+            >
+              <ul class="mt-3">
+                <li>
+                  <label
+                    class="text-info d-inline-block mie-1"
+                    translate="companies.account_name"
+                  ></label>
+                  <span class="d-inline-block">
+                    {{ data.accountName }}
+                  </span>
+                </li>
+                <li>
+                  <label
+                    class="text-info d-inline-block mie-1"
+                    translate="companies.bank_code"
+                  >
+                  </label>
+                  <span class="d-inline-block">
+                    {{ data.bankCode }}
+                  </span>
+                </li>
+              
+
+                <li>
+                  <label
+                    class="text-info d-inline-block mie-1"
+                    translate="companies.tax_number"
+                  >
+                  </label>
+                  <span class="d-inline-block">
+                    {{ data.taxNumber }}
+                  </span>
+                </li>
+                <li>
+                  <label
+                    class="text-info d-inline-block mie-1"
+                    translate="companies.owner_name"
+                  >
+                  </label>
+                  <span class="d-inline-block">
+                    {{ data.accountHolderName }}
+                  </span>
+                </li>
+                <li>
+                  <label
+                    class="text-info d-inline-block mie-1"
+                    translate="companies.iban"
+                  >
+                  </label>
+                  <span class="d-inline-block">
+                    {{ data.iban }}
+                  </span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-8 model-xl-9">
+    <div class="flex-column d-flex h-100">
+      <div>
+        <div class=" d-block">
+          <ng-container *ngTemplateOutlet="package? plan : noplan"></ng-container>
+        </div>
+
+        <ul class="nav nav-tabs mt-lg-3">
+          <li class="nav-item" *ngFor="let link of navbarLinks">
+            <a
+              [routerLink]="link.link"
+              class="nav-link"
+              routerLinkActive="active"
+              [translate]="'companies.' + link.name"
+            >
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div class="mt-3 flex-grow-1">
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #noplan>
+  <div class="card rounded-16 border-0 block noplan">
+    <div class="card-body">
+      <h3 class="text-align-center m-auto" translate="global.no_package_yet"></h3>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #plan>
+  <div class="card rounded-16 border-0 block">
+    <div class="card-body">
+      <h2 class="fw-600 float-end m-0">{{package?.package.packageTotalCost}}</h2>
+      <div class="d-flex w-100">
+        <div class="flex-shrink-0">
+          <img src="assets/images/svgs/plan.svg" alt="" width="80" />
+        </div>
+        <div class="flex-grow-1 mis-3">
+          <h5 class="mt-0 fw-600">{{(lang.isAr | async)? package?.package.packageName : package?.package.packageNameEn}}</h5>
+          <p class="text-info">
+           {{ (lang.isAr | async)? package?.package.packageDescription : package?.package.packageDescriptionEn}}
+          </p>
+
+          <div
+            class="d-flex gap-3 flex-wrap justify-content-between align-items-center"
+          >
+            <div>
+              <label class="text-primary fs-14 text-info" translate="global.avaliable_from"></label>
+              <p>{{startDate | date}}</p>
+            </div>
+            <div>
+              <label class="text-primary fs-14 text-info" translate="global.avaliable_till"
+                ></label
+              >
+              <p>{{endDate |date}}</p>
+            </div>
+            <div>
+              <button
+                type="button"
+                class="btn rounded-8 btn-sm bg-info-o text-info" translate="global.change_plan"
+              >
+                
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>

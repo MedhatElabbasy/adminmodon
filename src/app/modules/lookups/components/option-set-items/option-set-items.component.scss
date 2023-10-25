@@ -1,0 +1,28 @@
+::ng-deep {
+  html:lang(arz) {
+    .opened {
+      left: 0 !important;
+      right: auto;
+      top: 2px;
+    }
+  }
+}
+
+.option-color {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 2.5px white solid;
+  box-shadow: 0 1px 1px #0003, 0 1px 1px 1px #00000024, 0 1px 1px 1px #0000001f;
+}
+
+// ::ng-deep {
+// .ng-tns-c184-4{
+//   left:0 !important;
+// }
+// }
+
+
+.opened[_ngcontent-wra-c184]{
+  position: inherit !important;
+}

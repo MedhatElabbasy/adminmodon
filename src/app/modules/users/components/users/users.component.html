@@ -1,0 +1,264 @@
+<div class="card rounded-12 border-0 mt-2">
+  <div class="card-body">
+    <header class="d-flex gap-3 flex-wrap justify-content-between
+      align-items-center">
+      <div class="col-12 col-sm-4">
+        <div class="input-group">
+          <span class="input-group-text border-0 bg-transparent" id="search">
+            <ion-icon name="search"></ion-icon>
+          </span>
+          <input type="text" id="fname" (keyup)="keyupFunction($event)"
+            (keydown)="keydownfunction()" class="form-control" [placeholder]="
+            'global.search' | translate" aria-label="search"
+            aria-describedby="search">
+        </div>
+      </div>
+
+      <div class="d-flex col-12 col-sm justify-content-between
+        justify-content-sm-end gap-3">
+        <button class="btn rounded-m rounded-8 btn-primary d-flex gap-2
+          align-items-center" (click)="clear()" type="button">
+
+          {{ "global.clear"| translate }}
+        </button>
+        <!-- <div class="dropdown">
+          <button class="btn d-flex text-info gap-2 align-items-center rounded-m
+            rounded-8 bg-info-o dropdown-toggle" type="button"
+            id="dropdownMenuButton1" data-bs-toggle="dropdown"
+            aria-expanded="false">
+            {{ "global.order_by" | translate }}
+          </button>
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+            <li class="dropdown-item" (click)="english()">{{"global.ascending"|
+              translate}}</li>
+            <li class="dropdown-item" (click)="arabic()">{{"global.descending"|
+              translate}}</li>
+          </ul>
+        </div> -->
+        <div class="dropdown menue2">
+          <button class="btn rounded-m rounded-8 btn-primary d-flex gap-2
+            align-items-center dropdown-toggle " type="button"
+            id="dropdownMenuButton2" data-bs-toggle="dropdown"
+            aria-expanded="false">
+            <i class="fa-solid fa-sliders"></i>
+            {{ "global.filtration" | translate }}
+          </button>
+          <ul class="dropdown-menu " aria-labelledby="dropdownMenuButton2">
+            <li class="dropdown-item" (click)="filterActive()">{{"users.active"
+              |translate}}</li>
+            <li class="dropdown-item" (click)="filterDeActive()">{{"users.DeActiveUser"
+              |translate}}</li>
+            <li class="dropdown-item" (click)="filterSuperAdmin()">{{'global.Superadmin'|translate}}</li>
+            <li class="dropdown-item" (click)="filterAdmin()">{{'global.Admin'|translate}}</li>
+          </ul>
+        </div>
+      </div>
+    </header>
+    <hr />
+    <div class="table-responsive">
+      <table class="table table-striped table-borderless">
+        <thead>
+          <tr>
+            <th scope="col" translate="global.name"></th>
+            <th scope="col" translate="global.contact_number"></th>
+            <th scope="col" translate="global.role"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="cursor: pointer;" (click)="Details(user)" *ngFor="
+            let user of users
+            | filter: searchKey
+            | paginate
+            : {
+            itemsPerPage: pageSize,
+            currentPage: pageNumber,
+            totalItems: total,
+            id: 'user'
+            }
+            ">
+            <td class="td-photo">
+              <div class="d-flex gap-3 align-items-center">
+                <img [src]="user?.photo?.fullLink! | sanitizer" alt="logo"
+                  height="40" width="40"
+                  class="d-block obj-cover obj-position-c rounded-8"
+                  onerror="this.src='assets/images/icons/person.png'" />
+                <div class="fw-500">
+                  {{ user.firstName }} {{user.middleName}} {{ user.lastName }}
+                </div>
+              </div>
+            </td>
+            <td>
+              {{ user.mobileNumber }}
+            </td>
+            <td>
+              <div class="d-flex justify-content-start gap-4
+                align-items-center">
+                <div class="d-flex gap-3">
+                  <label *ngIf="user.isTakidSuperAdmin">
+                    {{'global.Superadmin'|translate}}
+                  </label>
+                  <label *ngIf="!user.isTakidSuperAdmin">
+                    {{'global.Admin'|translate}}
+                  </label>
+                  <!-- <p-inputSwitch [(ngModel)]="user.isTakidSuperAdmin" (onChange)="toggleAdmin(user, $event)"></p-inputSwitch> -->
+                </div>
+              </div>
+            </td>
+            <td>
+              <div class="d-flex justify-content-end gap-4 align-items-center">
+                <div class="d-flex gap-3">
+                  <label *ngIf="user.isActive">
+                    {{'Rasd.active'|translate}}
+                  </label>
+                  <label *ngIf="!user.isActive">
+                    {{'Rasd.DeActiveUser'|translate}}
+                  </label>
+                  <p-inputSwitch [(ngModel)]="user.isActive"
+                    (click)="stopEvent($event)" (onChange)="toggleState(user,
+                    $event)"></p-inputSwitch>
+                </div>
+                <div class="d-flex gap-2 justify-content-end">
+                  <button *ngIf="false" type="button" class="btn rounded-8
+                    bg-primary-hover text-white edit">
+                    <i class="fa-solid fa-pen"></i>
+                  </button>
+                  <button (click)="userId= user.id; openModal(modalID)"
+                    (click)="stopEvent($event)" type="button"
+                    class="btn text-white rounded-8 bg-danger-hover delete">
+                    <i class="fa-solid fa-trash"></i>
+                  </button>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr *ngIf="!users?.length">
+
+            <td colspan="4" class="text-align-center fs-5 text-danger">
+              <span translate="global.no_data_to_show" class="fw-500"></span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <hr />
+
+    <div class="d-flex align-items-center justify-content-between gap-3">
+      <div class="text-info d-flex gap-3 align-items-center">
+        <label class="fw-500" translate="global.for_page"></label>
+        <div>
+          <select class="form-select" (change)="onPageSizeChange($event)">
+            <option *ngFor="let size of sizes" [selected]="size == pageSize">
+              {{ size }}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <pagination-controls
+        id="user"
+        (pageChange)="onPageChange($event)"
+        (pageBoundsCorrection)="onPageChange($event)"
+        [maxSize]="5"
+        [responsive]="true"
+        [previousLabel]="''"
+        [nextLabel]="''"
+        screenReaderPaginationLabel="Pagination"
+        screenReaderPageLabel="page"
+        screenReaderCurrentLabel="You're on page">
+      </pagination-controls>
+    </div>
+  </div>
+</div>
+
+<!-- ------------------------------- delete -------------------------------- -->
+<app-modal classList="modal-dialog-centered" [id]="modalID">
+  <img src="assets/images/svgs/delete.svg" alt="" srcset="" />
+  <h4 class="fw-700" translate="users.are_you_sure_about_deleting_user"></h4>
+  <p class="mt-2 text-info" translate="global.cancel_this_operation"></p>
+
+  <div class="d-flex justify-content-end gap-2">
+    <button type="button" class="btn rounded-8 px-4 py-2 btn-light"
+      translate="global.cancel"
+      (click)="userId= ''; closeModal(modalID)"></button>
+    <button translate="global.yes_delete" type="button" class="btn rounded-8
+      px-4 py-2 btn-danger"
+      (click)="onDelete()"></button>
+  </div>
+</app-modal>
+<!--------------------------------UserManagementDetails---------------------------------->
+<app-offcanvas [id]="canvasID">
+  <div class="d-flex flex-column h-100">
+    <div class="flex-fill">
+      <h4 class="text-align-center fw-bold mt-3 mb-4"
+        translate="users.user_details"></h4>
+
+      <div class="card rounded-10 bg-primary-o border-0 mb-3">
+        <div class="card-body">
+          <div class="d-flex">
+            <div class="flex-shrink-0">
+              <img width="60" height="60" class="obj-cover rounded-10
+                obj-position-c"
+                [src]="userDetails?.photo?.fullLink" [title]="" />
+            </div>
+            <div class="flex-grow-1 mis-3">
+              <h5 class="mt-0">
+                {{ userDetails?.firstName }} {{userDetails?.middleName}}
+                {{userDetails?.lastName}}
+              </h5>
+              <p class="limit-3">
+                {{userDetails?.email}}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
+      <div class="card bg-warning-o rounded-10 border-0 my-3">
+        <div class="card-body">
+          <h6 class="text-info" translate="users.current_status"></h6>
+          <div class="d-flex text-primary">
+            <div class="flex-grow-1">
+              <p class="limit-3 m-0" *ngIf="userDetails?.isActive">
+                {{'Rasd.active'|translate}}
+              </p>
+              <p class="limit-3 m-0" *ngIf="!userDetails?.isActive">
+                {{'Rasd.DeActiveUser'|translate}}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card bg-warning-o rounded-10 border-0 my-3">
+        <div class="card-body">
+          <h6 class="text-info" translate="agents.agent_mobileNumber"></h6>
+          <div class="d-flex text-primary">
+            <p class="limit-3 m-0">
+              {{userDetails?.mobileNumber}}
+            </p>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="card bg-warning-o rounded-10 border-0 my-3">
+        <div class="card-body">
+          <h6 class="text-info" translate="global.role"></h6>
+          <div class="d-flex text-primary">
+            <p class="limit-3 m-0" *ngIf="userDetails?.isTakidSuperAdmin">
+              {{'global.Superadmin'|translate}}
+            </p>
+            <p class="limit-3 m-0" *ngIf="!userDetails?.isTakidSuperAdmin">
+              {{'global.Admin'|translate}}
+            </p>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+</app-offcanvas>

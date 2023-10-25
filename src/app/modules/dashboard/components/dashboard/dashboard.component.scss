@@ -1,0 +1,117 @@
+.dash{
+    width:150px;
+    height:180px;
+    position:relative;
+}
+.dashNumber{
+    position: absolute;
+    bottom:10px;
+}
+.card{
+    width:650px;
+}
+
+.search-results-container{
+    height: 400px;
+    width: 360px;
+    overflow: auto;
+    background-color: #DADAE3;
+    border-radius: 12px;
+}
+.main{
+    margin-right: 50px;
+    height: 500px;
+    width: 380px;
+    background-color: #DADAE3;
+    border-radius: 12px;
+}
+.container{
+    width: 90%;
+    height: 90%;
+    margin: auto;
+    padding-bottom: 20px;
+}
+
+.lds-ellipsis {
+    display: inline-block;
+    position: relative;
+    width: 80px;
+    height: 80px;
+    margin: auto;
+  }
+  .lds-ellipsis div {
+    position: absolute;
+    top: 33px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #12123C;
+    animation-timing-function: cubic-bezier(0, 1, 1, 0);
+  }
+  .lds-ellipsis div:nth-child(1) {
+    left: 8px;
+    animation: lds-ellipsis1 0.6s infinite;
+  }
+  .lds-ellipsis div:nth-child(2) {
+    left: 8px;
+    animation: lds-ellipsis2 0.6s infinite;
+  }
+  .lds-ellipsis div:nth-child(3) {
+    left: 32px;
+    animation: lds-ellipsis2 0.6s infinite;
+  }
+  .lds-ellipsis div:nth-child(4) {
+    left: 56px;
+    animation: lds-ellipsis3 0.6s infinite;
+  }
+  @keyframes lds-ellipsis1 {
+    0% {
+      transform: scale(0);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+  @keyframes lds-ellipsis3 {
+    0% {
+      transform: scale(1);
+    }
+    100% {
+      transform: scale(0);
+    }
+  }
+  @keyframes lds-ellipsis2 {
+    0% {
+      transform: translate(0, 0);
+    }
+    100% {
+      transform: translate(24px, 0);
+    }
+  }
+  
+
+@media screen and (max-width: 500px){
+    .search-results-container{
+        height: 420px;
+        width: 300px;
+    }
+    .main{
+        height: 550px;
+        width: 320px;
+    }
+}
+@media screen and (max-width: 770px){
+    .female{
+        margin-top: 5px;
+    }
+    .card{
+        width:400px;
+    }
+    
+}
+
+@media screen and (max-width : 1120px){
+  .main{
+    margin-top: 20px;
+  }
+}

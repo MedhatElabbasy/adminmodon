@@ -1,0 +1,139 @@
+<div class="card rounded-12 border-0 mt-2">
+  <div class="card-body">
+    <header class="d-flex gap-3 flex-wrap justify-content-between align-items-center">
+      <div class="col-12 col-sm-4">
+        <div class="input-group">
+          <span class="input-group-text border-0 bg-transparent" id="search">
+            <ion-icon name="search"></ion-icon>
+          </span>
+          <input type="text" id="fname" (keyup)="keyupFunction($event)" (keydown)="keydownfunction()"
+            class="form-control" [placeholder]=" 'global.search' | translate" aria-label="search"
+            aria-describedby="search">
+        </div>
+      </div>
+
+      <div class="d-flex col-12 col-sm justify-content-between justify-content-sm-end gap-3">
+
+        <button class="btn rounded-m rounded-8 btn-primary d-flex gap-2 align-items-center" (click)="clear()"
+          type="button">
+        
+          {{ "global.clear"| translate }}
+        </button>
+        <div class="dropdown">
+          <button class="btn d-flex gap-2 align-items-center rounded-m rounded-8 bg-info-o  dropdown-toggle"
+            type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+            {{ "global.order_by" | translate }}
+          </button>
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+            <li class="dropdown-item" (click)="english()">{{"global.ascending"| translate}}</li>
+            <li class="dropdown-item" (click)="arabic()">{{"global.descending"| translate}}</li>
+          </ul>
+        </div>
+        <div class="dropdown menue2">
+          <button class="btn rounded-m rounded-8 btn-primary d-flex gap-2 align-items-center  dropdown-toggle "
+            type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="fa-solid fa-sliders"></i>
+            {{ "global.filtration" | translate }}
+          </button>
+          <ul class="dropdown-menu " aria-labelledby="dropdownMenuButton2">
+            <li class="dropdown-item" (click)="filterActive()">{{"Rasd.active" |translate}}</li>
+            <li class="dropdown-item" (click)="filterDeActive()">{{"Rasd.DeActiveUser" |translate}}</li>
+          </ul>
+        </div>
+      </div>
+    </header>
+
+    <hr />
+
+    <div class="table-responsive">
+      <table class="table table-striped table-borderless">
+        <thead>
+          <tr>
+            <th scope="col" translate="companies.name"></th>
+            <th translate="companies.place"></th>
+            <th translate="companies.owner"></th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="
+              let company of companies
+                | filter: searchKey
+                | paginate
+                  : {
+                      itemsPerPage: pageSize,
+                      currentPage: pageNumber,
+                      totalItems: total,
+                      id: 'companies'
+                    }
+            " (click)="openDetails(company)" style="cursor:pointer;">
+            <td class="td-photo">
+              <div class="d-flex gap-3 align-items-center">
+                <img [src]="company.companyLogo.fullLink" alt="logo" height="45" width="45"
+                  class="d-bloc obj-cover obj-position-c profileimg"
+                  onerror="this.src = 'assets/images/icons/error.png'" />
+                <div class="fw-500 w-fit">{{ company.name }}</div>
+              </div>
+            </td>
+            <td class="text-nowrap">
+              {{
+              company.address.length > 50
+              ? (company.address | slice: 0:50) + "..."
+              : company.address
+              }}
+            </td>
+
+            <td>{{ company.firstName }} {{ company.lastName }}</td>
+            <td>
+              <div class="">
+                <div class="">
+                  <label *ngIf="company.isActive">
+                    {{"Rasd.active" | translate}}
+                  </label>
+                  <label *ngIf="!company.isActive">
+                    {{"Rasd.DeActiveUser" | translate}}
+                  </label>
+
+                </div>
+              </div>
+            </td>
+            <td>
+              <div class="d-flex gap-3">
+                <p-inputSwitch (click)="$event.stopPropagation()" [(ngModel)]="company.isActive"
+                  (onChange)="toggleState(company.id, $event)"></p-inputSwitch>
+
+              </div>
+            </td>
+          </tr>
+          <tr *ngIf="!companies?.length">
+
+            <td colspan="4" class="text-align-center fs-5 text-danger">
+              <span translate="global.no_data_to_show" class="fw-500"></span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <hr />
+
+    <div class="d-flex align-items-center justify-content-between gap-3">
+      <div class="text-info d-flex gap-3 align-items-center">
+        <label class="fw-500" translate="global.for_page"></label>
+        <div>
+          <select class="form-select" (change)="onPageSizeChange($event)">
+            <option *ngFor="let size of sizes" [selected]="size == pageSize">
+              {{ size }}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <pagination-controls id="companies" (pageChange)="onPageChange($event)"
+        (pageBoundsCorrection)="onPageChange($event)" [maxSize]="5" [responsive]="true" [previousLabel]="''"
+        [nextLabel]="''" screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page"
+        screenReaderCurrentLabel="You're on page">
+      </pagination-controls>
+    </div>
+  </div>
+</div>

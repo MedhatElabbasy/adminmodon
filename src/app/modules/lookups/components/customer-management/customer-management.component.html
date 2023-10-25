@@ -1,0 +1,185 @@
+<button type="button" class="btn btn-primary d-block mis-auto px-4 rounded-8 mb-3 d-flex gap-2 align-items-center"
+  (click)="selectUser=null ; openCanvas(canvasID)">
+  <ion-icon name="add"></ion-icon>
+  {{ "global.add" | translate }}
+</button>
+
+<ul class="nav nav-tabs">
+  <li class="nav-item">
+    <a class="nav-link" translate="Rasd.Monitor_clients">
+    </a>
+  </li>
+</ul>
+
+<app-rasd-users></app-rasd-users>
+
+<app-offcanvas [id]="canvasID">
+  <form [formGroup]="userForm" #form="ngForm" (ngSubmit)="addUser(userForm)"
+    class="d-flex flex-column gap-3 h-100 p-1 overflow-visible">
+    <div>
+      <h3 translate="Rasd.Add" class="text-align-center fw-bold"></h3>
+      <div class="mt-4 bg-info-o d-flex text-info justify-content-between gap-3 align-items-center p-2 rounded-8">
+        <label translate="users.current_status"></label>
+        <p-inputSwitch formControlName="isActive"></p-inputSwitch>
+      </div>
+      <!-- -----------------------upload photo--------------------------------------- -->
+      <div class="user-photo bg-info-o my-4 mx-auto text-info">
+        <img *ngIf="profileImage" [src]="profileImage | sanitizer" alt="user_image" class="user_image"
+          (click)="userPhoto.click()" />
+        <div [hidden]="profileImage" class="p-3" (click)="userPhoto.click()">
+          <img src="assets/images/svgs/upload_user_img.svg" alt="" />
+          <div class="lh-sm mt-3" translate="users.click_here_to_upload_user_image"></div>
+          <input required (change)="onImageUpload($event)" type="file" hidden #userPhoto />
+        </div>
+      </div>
+      <div class="error-message mb-3 text-center" *ngIf="this.userForm.controls['photoId'].invalid && form.submitted">
+        <ion-icon name="close-circle-outline" class="fs-5"></ion-icon>
+        {{ "validation.photo_required" | translate }}
+      </div>
+      <!-- -------------------------------- name --------------------------------- -->
+      <div class="d-flex gap-2">
+        <div>
+          <div class="form-floating mb-3">
+            <input type="text" class="form-control" formControlName="firstName" />
+            <label for="fName" translate="global.first_name"></label>
+          </div>
+
+          <div class="error-message"
+            *ngIf="this.userForm.controls['firstName']?.errors?.['required'] && form.submitted">
+            <ion-icon name="close-circle-outline" class="fs-5"></ion-icon>
+            {{ "validation.first_name_is_required" | translate }}
+          </div>
+          <div class="error-message" *ngIf="this.userForm.controls['firstName']?.errors?.['pattern']&& form.submitted">
+            <ion-icon name="close-circle-outline" class="fs-5"></ion-icon>
+            {{ "validation.not_valid" | translate }}
+          </div>
+        </div>
+      
+
+      <div>
+        <div class="form-floating mb-3">
+          <input type="text" class="form-control" formControlName="middleName" />
+          <label for="mName" translate="global.middle_name"></label>
+        </div>
+        <div class="error-message"
+        *ngIf="this.userForm.controls['middleName']?.errors?.['required'] && form.submitted">
+        <ion-icon name="close-circle-outline" class="fs-5"></ion-icon>
+        {{ "validation.first_name_is_required" | translate }}
+      </div>
+      <div class="error-message" *ngIf="this.userForm.controls['middleName']?.errors?.['pattern']&& form.submitted">
+        <ion-icon name="close-circle-outline" class="fs-5"></ion-icon>
+        {{ "validation.not_valid" | translate }}
+      </div>
+      </div>
+
+      <div>
+        <div class="form-floating mb-3">
+          <input type="text" class="form-control" id="lanme" formControlName="lastName" />
+          <label for="lName" translate="global.last_name"></label>
+        </div>
+        <div class="error-message"
+        *ngIf="this.userForm.controls['lastName']?.errors?.['required'] && form.submitted">
+        <ion-icon name="close-circle-outline" class="fs-5"></ion-icon>
+        {{ "validation.first_name_is_required" | translate }}
+      </div>
+      <div class="error-message" *ngIf="this.userForm.controls['lastName']?.errors?.['pattern']&& form.submitted">
+        <ion-icon name="close-circle-outline" class="fs-5"></ion-icon>
+        {{ "validation.not_valid" | translate }}
+      </div>
+      </div>
+    </div>
+
+
+    </div>
+
+    <!-- -------------------------------- phone -------------------------------- -->
+    <div id="mobile1" class="form-floating mb-3">
+      <div class="form-control d-flex">
+        <select class="form-select py-0 w-fit" id="floatingSelect" [formControl]="code1">
+          <option [value]="item.ioS2" *ngFor="let item of codes">
+            {{ item.ioS2 }}
+          </option>
+        </select>
+        <input type="text" id="phone" class="form-control rounded-0 col p-0" formControlName="phoneNumber" />
+      </div>
+
+      <label for="phone" translate="global.mobile_number"> </label>
+      <div class="mb-1" *ngIf="this.userForm.controls['phoneNumber'].invalid && form.submitted">
+        <div class="error-message" *ngIf="this.userForm.controls['phoneNumber'].errors?.['required'] && form.submitted">
+          <ion-icon name="close-circle-outline" class="fs-5"></ion-icon>
+          {{ "validation.phone_required" | translate }}
+        </div>
+      </div>
+    </div>
+
+
+    <div id="mobile2" class="form-floating mb-3">
+      <div class="form-control d-flex">
+        <select class="form-select py-0 w-fit" id="floatingSelect" [formControl]="code2">
+          <option [value]="item.ioS2" *ngFor="let item of codes">
+            {{ item.ioS2 }}
+          </option>
+        </select>
+        <input type="text" id="phone" class="form-control rounded-0 col p-0" formControlName="phoneNumber2" />
+      </div>
+
+      <label for="phone" translate="global.mobile_number2"> </label>
+      <div class="mb-1" *ngIf="this.userForm.controls['phoneNumber2'].invalid && form.submitted">
+        <div class="error-message"
+          *ngIf="this.userForm.controls['phoneNumber2'].errors?.['required'] && form.submitted">
+          <ion-icon name="close-circle-outline" class="fs-5"></ion-icon>
+          {{ "validation.phone_required" | translate }}
+        </div>
+      </div>
+    </div>
+
+    <!-- -------------------------------------idNumber --------------------------------- -->
+    <div>
+      <div class="form-floating mb-3">
+        <input type="text" class="form-control" formControlName="idNumber" />
+        <label translate="global.idNumber"></label>
+      </div>
+      <div class="error-message" *ngIf="this.userForm.controls['idNumber'].invalid && form.submitted">
+        <ion-icon name="close-circle-outline" class="fs-5"></ion-icon>
+        {{ "validation.idNumber_is_required" | translate }}
+      </div>
+    </div>
+
+    <!-- -------------------------------- email -------------------------------- -->
+    <div class="form-floating mb-3">
+      <input type="email" class="form-control" id="email" placeholder="data" formControlName="email" />
+      <label for="email" translate="global.email"></label>
+      <div class="mb-3" *ngIf="this.userForm.controls['email'].invalid && form.submitted">
+        <div class="error-message" *ngIf="this.userForm.controls['email'].errors?.['email'] && form.submitted">
+          <ion-icon name="close-circle-outline" class="fs-5"></ion-icon>
+          {{ "validation.email_is_not_valid" | translate }}
+        </div>
+
+        <div class="error-message" *ngIf="this.userForm.controls['email'].errors?.['required'] && form.submitted">
+          <ion-icon name="close-circle-outline" class="fs-5"></ion-icon>
+          {{ "validation.email_required" | translate }}
+        </div>
+      </div>
+    </div>
+
+
+
+    <!-- ------------------------------------buttons -------------------------------------  -->
+    <div class="flex-grow-1 d-flex justify-content-end align-items-end gap-2 pb-3">
+      <button type="button" class="btn px-4 rounded-8 btn-light bg-info-o" translate="global.cancel"
+        data-bs-dismiss="offcanvas" (click)="form.resetForm()"></button>
+      <button type="submit" class="btn px-4 rounded-8 btn-primary" translate="global.add"></button>
+    </div>
+
+  </form>
+</app-offcanvas>
+
+<!-------------------------------------------------------------------------->
+
+<app-modal classList="modal-dialog-centered" [id]="modalID">
+  <p class="mt-2 text-info">{{errorMessage}}</p>
+  <div class="d-flex justify-content-end gap-2">
+    <button type="button" class="btn rounded-8 px-4 py-2 btn-light" translate="global.cancel"
+      (click)="closeModal(modalID)" ></button>
+  </div>
+</app-modal>

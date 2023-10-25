@@ -1,0 +1,9 @@
+.form-control,
+.form-select {
+    background-color: #fff !important;
+}
+
+
+.form-floating > .form-control:not(:placeholder-shown){
+    padding: 1rem !important;
+}

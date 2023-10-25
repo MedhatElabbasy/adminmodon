@@ -1,0 +1,74 @@
+<div class="h-100 container py-5">
+  <div class="d-flex w-100 h-100 align-items-center">
+    <div class="ps-lg-4 w-100">
+      <h2 class="fw-600 " style="color: #006996;" translate="auth.welcome_back"></h2>
+      <p class="fw-500" translate="auth.please_login_to_continue"></p>
+      <form [formGroup]="loginForm" #form="ngForm" (ngSubmit)="onSubmit()" class="mt-4 py-2">
+        <div id="mobile" class="form-floating mb-3">
+          <div class="form-control d-flex">
+            <select class="form-select py-0 w-fit" id="floatingSelect" [formControl]="code">
+              <option [value]="item.prefixCode" *ngFor="let item of codes">
+                {{ item.ioS2 }}
+              </option>
+            </select>
+            <input type="text" id="phone" class="form-control rounded-0 col p-0" formControlName="mobileNumber" />
+          </div>
+
+          <label for="phone" translate="global.mobile_number"> </label>
+        </div>
+
+        <div class="mb-3" *ngIf="MobileNumber.invalid">
+          <div class="error-message" *ngIf="MobileNumber?.errors?.pattern && MobileNumber.touched">
+            <ion-icon name="close-circle-outline" class="fs-5"></ion-icon>
+            {{ "validation.phone_is_not_valid" | translate }}
+          </div>
+
+          <div class="error-message" *ngIf="MobileNumber.errors.required && form.submitted">
+            <ion-icon name="close-circle-outline" class="fs-5"></ion-icon>
+            {{ "validation.phone_required" | translate }}
+          </div>
+        </div>
+
+        <ngx-recaptcha2 #captchaElem [siteKey]="key" [useGlobalDomain]="false" [size]="captcha.size" [hl]="captcha.lang"
+          [theme]="captcha.theme" [type]="captcha.type" [hl]="$any(lang.language | async)" formControlName="recaptcha">
+        </ngx-recaptcha2>
+
+        <p class="error-message" *ngIf="Recaptcha.invalid && form.submitted">
+          <ion-icon name="close-circle-outline" class="fs-5"></ion-icon>
+          {{ "validation.please_confirm_you_are_not_robot" | translate }}
+        </p>
+
+        <!-- <div class="form-floating mb-3">
+          <input
+            type="password"
+            class="form-control"
+            id="password"
+            placeholder="password"
+          />
+          <label for="password">Password</label>
+        </div> -->
+
+        <!-- <div
+          class="d-flex text-info align-items-center justify-content-between"
+        >
+          <div class="form-check">
+            <input type="checkbox" class="form-check-input" id="remember" />
+            <label class="form-check-label" for="remember">Remember Me</label>
+          </div>
+
+          <a
+            [routerLink]="[forgotPasswordLink]"
+            class="text-capitalize text-info c-pointer text-decoration-none"
+          >
+            forgot password?
+          </a>
+        </div> -->
+
+        <button type="submit" class="btn mt-4 btn-primary py-2 d-flex align-items-center gap-4 rounded-8">
+          <span translate="auth.login"> </span>
+          <img src="assets/images/icons/arrow.png" class="img-fluid d-block rtl-flip" alt="arrow" />
+        </button>
+      </form>
+    </div>
+  </div>
+</div>

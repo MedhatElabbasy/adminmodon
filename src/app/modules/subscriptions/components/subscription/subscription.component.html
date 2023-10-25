@@ -1,0 +1,29 @@
+<h3 class="my-3" translate="subscriptions.subscriptions"></h3>
+
+<ul class="nav nav-tabs">
+    <li class="nav-item">
+      <a class="nav-link" [routerLink]="links.subscriptionPlan" routerLinkActive="active" translate="subscriptions.subscriptionplan">
+      </a>
+    </li>
+    <!-- <li class="nav-item">
+      <a
+        [routerLink]="links.payment"
+        routerLinkActive="active"
+        translate="تفاصيل المدفوعات"
+        class="nav-link"
+      >
+      </a>
+    </li> -->
+    <li class="nav-item">
+      <a
+        [routerLink]="links.subscriptionPackageItems"
+        routerLinkActive="active"
+        translate="subscriptions.subscriptionPackageItems"
+        class="nav-link"
+      >
+      </a>
+    </li>
+  </ul>
+
+
+  <router-outlet></router-outlet>

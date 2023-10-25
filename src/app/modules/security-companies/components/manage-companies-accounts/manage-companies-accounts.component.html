@@ -1,0 +1,31 @@
+<ul class="nav nav-tabs">
+  <li class="nav-item">
+    <a
+      class="nav-link"
+      [routerLink]="links.accounts"
+      routerLinkActive="active"
+      translate="companies.companies"
+    >
+    </a>
+  </li>
+  <li class="nav-item">
+    <a
+      [routerLink]="links.requests"
+      routerLinkActive="active"
+      translate="companies.requests"
+      class="nav-link"
+    >
+    </a>
+  </li>
+  <li class="nav-item">
+    <a
+      [routerLink]="links.rejected"
+      routerLinkActive="active"
+      translate="companies.rejected_companies"
+      class="nav-link"
+    >
+    </a>
+  </li>
+</ul>
+
+<router-outlet></router-outlet>

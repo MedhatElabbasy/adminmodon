@@ -1,0 +1,27 @@
+<button
+  hidden
+  [id]="id + '-canvas-open'"
+  data-bs-toggle="offcanvas"
+  [attr.data-bs-target]="'#' + id + '-canvas'"
+  [attr.aria-controls]="id"
+></button>
+<div
+  class="offcanvas {{width}}"
+  [class.offcanvas-end]="!isRtl"
+  [class.offcanvas-start]="isRtl"
+  tabindex="-1"
+  [id]="id + '-canvas'"
+>
+  <button
+    type="button"
+    class="canvas-btn text-reset"
+    data-bs-dismiss="offcanvas"
+    aria-label="Close"
+    [id]="id + '-canvas-close'"
+  >
+    <ion-icon name="close-outline"></ion-icon>
+  </button>
+  <div class="offcanvas-body overflow-auto">
+    <ng-content></ng-content>
+  </div>
+</div>

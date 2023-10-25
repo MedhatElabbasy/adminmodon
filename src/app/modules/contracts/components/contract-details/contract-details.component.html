@@ -1,0 +1,155 @@
+<div class="d-flex flex-column h-100">
+  <div class="flex-fill">
+    <h4 class="text-align-center fw-bold mt-3 mb-4" translate="contracts.contract_details"></h4>
+
+    <div class="card rounded-10 bg-primary-o border-0 mb-3">
+      <div class="card-body">
+        <h6 class="mb-3 text-info" translate="contracts.security_company"></h6>
+        <div class="d-flex">
+          <div class="flex-shrink-0">
+            <img width="60" height="60" class="obj-cover rounded-10 obj-position-c"
+              [src]="contract?.securityCompany?.companyLogo?.fullLink" [title]="contract?.securityCompany?.name" />
+          </div>
+          <div class="flex-grow-1 mis-3">
+            <h5 class="mt-0">
+              {{ contract?.securityCompany?.name }}
+            </h5>
+            <p class="limit-3">
+              {{ contract?.securityCompany?.businessDescription }}
+            </p>
+          </div>
+        </div>
+
+        <button [routerLink]="[detailsLink, contract?.securityCompany?.id]" translate="companies.about_company"
+          type="button" class="btn btn-primary d-block mis-auto rounded-8"></button>
+      </div>
+    </div>
+
+    <div class="card bg-warning-o rounded-10 border-0">
+      <div class="card-body">
+        <h6 class="text-info" translate="contracts.client_company"></h6>
+        <div class="d-flex text-primary">
+          <div class="flex-grow-1">
+            <h5 class="m-0">{{ contract?.clientCompany?.name }}</h5>
+            <p class="limit-3 m-0">
+              {{ contract?.securityCompany?.email }}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+    <div class="card bg-warning-o rounded-10 border-0 my-3">
+      <div class="card-body">
+        <h6 class="text-info" translate="contracts.contract_start_date"></h6>
+        <div class="d-flex text-primary">
+          <div class="flex-grow-1">
+            <p  *ngIf="contract?.startDate" class="limit-3 m-0">
+              {{contract?.startDate!.substring(0,10) }}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card bg-warning-o rounded-10 border-0 my-3">
+      <div class="card-body">
+        <h6 class="text-info" translate="contracts.contract_end_date"></h6>
+        <div class="d-flex text-primary">
+            <p *ngIf="contract?.endDate" class="limit-3 m-0">
+              {{contract?.endDate!.substring(0,10) }}
+            </p>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="card bg-warning-o rounded-10 border-0 my-3">
+      <div class="card-body">
+        <h6 class="text-info" translate="contracts.location"></h6>
+        <div class="d-flex text-primary">
+            <p *ngIf="contract?.endDate" class="limit-3 m-0">
+              {{contract?.clientOrder?.location}}
+            </p>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="card bg-warning-o rounded-10 border-0 my-3">
+      <div class="card-body">
+        <h6 class="text-info" translate="contracts.numberOfGurads"></h6>
+        <div class="d-flex text-primary">
+            <p *ngIf="contract?.endDate" class="limit-3 m-0">
+              {{contract?.clientOrder?.numberOfGurads}}
+            </p>
+        </div>
+      </div>
+    </div>
+
+
+    
+    <div class="card bg-warning-o rounded-10 border-0 my-3">
+      <div class="card-body">
+        <h6 class="text-info" translate="contracts.numberOfSupervisors"></h6>
+        <div class="d-flex text-primary">
+            <p *ngIf="contract?.endDate" class="limit-3 m-0">
+              {{contract?.clientOrder?.numberOfSupervisors}}
+            </p>
+        </div>
+      </div>
+    </div>
+   
+
+    <div class="card bg-warning-o rounded-10 border-0 my-3">
+      <div class="card-body">
+        <h6 class="text-info" translate="contracts.contract_type"></h6>
+        <div class="d-flex text-primary">
+            <p class="limit-3 m-0">
+              {{
+                (lang.isAr | async)
+                  ? contract?.contractType.nameAr
+                  : contract?.contractType.nameEn
+              }}
+            </p>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="card bg-warning-o rounded-10 border-0 my-3">
+      <div class="card-body">
+        <h6 class="text-info" translate="contracts.contract_status"></h6>
+        <div class="d-flex text-primary">
+            <p class="limit-3 m-0">
+              {{
+                (lang.isAr | async)
+                  ? contract?.contractStatus?.nameAr
+                  : contract?.contractStatus?.nameEn
+              }}
+            </p>
+        </div>
+      </div>
+    </div>
+
+     
+    <div *ngIf="contract?.oldContractFile?.fullLink" class="card bg-warning-o rounded-10 border-0 my-3">
+      <div class="card-body">
+        <div class="d-flex text-primary">
+          <a translate="contracts.contract_details" (click)="navigate(contract)"
+           class="btn btn-primary d-block rounded-8">
+        </a>
+        </div>
+      </div>
+    </div>
+
+
+
+
+
+
+
+  </div>
+</div>

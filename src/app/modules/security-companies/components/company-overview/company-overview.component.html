@@ -1,0 +1,256 @@
+<div>
+  <h5
+    translate="companies.company_details"
+    class="text-align-center fw-bold"
+  ></h5>
+
+  <img
+    src="{{ company.companyLogo.fullLink }}"
+    alt="logo"
+    width="100"
+    class="d-block mx-auto mt-4 company_image"
+    onerror="this.src = 'assets/images/icons/error.png'"
+  />
+
+  <h3 class="text-align-center fw-500">
+    {{ company.name }}
+  </h3>
+  <p
+    class="text-info align-items-center text-align-center justify-content-center"
+  >
+    <ion-icon name="location-sharp"></ion-icon>
+    {{ company.address }}
+  </p>
+
+  <div class="d-flex gap-2 justify-content-center">
+    <a class="link" [href]="company.businessDescription" target="_blank">
+      <ion-icon name="globe-outline"></ion-icon>
+    </a>
+    <a class="link" [href]="company.socialMediaLink2" target="_blank">
+      <i class="fa-brands fa-facebook-f"></i>
+    </a>
+    <a class="link" [href]="company.businessDescription" target="_blank">
+      <ion-icon name="logo-instagram"></ion-icon>
+    </a>
+  </div>
+
+  <hr />
+
+  <h5 class="fw-600" translate="companies.about_company"></h5>
+  <!-- ------------------------------ business ------------------------------- -->
+  <p>{{ company.businessDescription }}</p>
+  <!-- -------------------------------- info --------------------------------- -->
+  <ul class="fs-6">
+    <li>
+      <label
+        class="text-info d-inline-block mie-1"
+        translate="companies.business_type"
+      >
+      </label>
+      <span class="d-inline-block">
+        {{ company.businessType.name }}
+      </span>
+    </li>
+    <li>
+      <label
+        class="text-info d-inline-block mie-1"
+        translate="companies.business_start_date"
+      >
+      </label>
+      <span class="d-inline-block">
+        {{ company.companyStartDate }}
+      </span>
+    </li>
+    <li>
+      <label class="text-info d-inline-block mie-1" translate="global.email">
+      </label>
+      <span class="d-inline-block">
+        {{ company.email }}
+      </span>
+    </li>
+    <li>
+      <label
+        class="text-info d-inline-block mie-1"
+        translate="global.contact_number"
+      ></label>
+      <span class="d-inline-block">
+        {{ company.companyContactNumber }}
+      </span>
+    </li>
+    <!-- <li>
+      <label
+        class="text-info d-inline-block mie-1"
+        translate="global.contact_number"
+      ></label>
+      <span class="d-inline-block">
+        {{ company.idProof.fullLink }}kkkkkkkkkkkkkkk
+      </span>
+    </li>
+    <li>
+      <label
+        class="text-info d-inline-block mie-1"
+        translate="global.contact_number"
+      ></label>
+      <span class="d-inline-block">
+        {{ company.commercialRegister.fullLink }}
+      </span>
+    </li> -->
+  </ul>
+
+  <h5 class="fw-600" translate="companies.company_services"></h5>
+  <ng-container>
+    <div
+      *ngIf="company.securitCompanyAvailableServices"
+      class="d-flex flex-wrap gap-2"
+    >
+      <div
+        class="services text-white"
+        *ngFor="let service of company.securitCompanyAvailableServices"
+      >
+        {{
+          (lang.isAr | async)
+            ? service.availableServices.name
+            : service.availableServices.nameEN
+        }}
+      </div>
+    </div>
+
+    <div
+      *ngIf="!company.securitCompanyAvailableServices"
+      class="fw-500 text-danger"
+      translate="global.no_data_to_show"
+    ></div>
+  </ng-container>
+
+  <h5 class="fw-600 mt-3" translate="companies.bank_details"></h5>
+
+  <img
+  [src]="company.idProof.fullLink"
+  height="80"
+  width="80"
+  class="obj-cover obj-position-c rounded-10 mx-auto d-block"
+  onerror="this.src = 'assets/images/icons/person.png'"
+/>
+
+  <ng-container>
+    <ul>
+      <li>
+        <label
+          class="text-info d-inline-block mie-1"
+          translate="companies.account_number"
+        ></label>
+        <span class="d-inline-block">
+          {{
+            company.accountName
+              ? company.accountName
+              : ("global.no_data_available" | translate)
+          }}
+        </span>
+      </li>
+      <li>
+        <label
+          class="text-info d-inline-block mie-1"
+          translate="companies.bank_code"
+        >
+        </label>
+        <span class="d-inline-block">
+          {{
+            company.bankCode
+              ? company.bankCode
+              : ("global.no_data_available" | translate)
+          }}
+        </span>
+      </li>
+
+      <li>
+        <label
+          class="text-info d-inline-block mie-1"
+          translate="companies.branch"
+        >
+        </label>
+        <span class="d-inline-block">
+          {{
+            company.bankBranch
+              ? company.bankBranch
+              : ("global.no_data_available" | translate)
+          }}
+        </span>
+      </li>
+
+      <li>
+        <label
+          class="text-info d-inline-block mie-1"
+          translate="companies.tax_number"
+        >
+        </label>
+        <span class="d-inline-block">
+          {{
+            company.taxNumber
+              ? company.taxNumber
+              : ("global.no_data_available" | translate)
+          }}
+        </span>
+      </li>
+      <li>
+        <label
+          class="text-info d-inline-block mie-1"
+          translate="companies.owner_name"
+        >
+        </label>
+        <span class="d-inline-block">
+          {{
+            company.accountHolderName
+              ? company.accountHolderName
+              : ("global.no_data_available" | translate)
+          }}
+        </span>
+      </li>
+      <li>
+        <label
+          class="text-info d-inline-block mie-1"
+          translate="companies.iban"
+        >
+        </label>
+        <span class="d-inline-block">
+          {{
+            company.iban
+              ? company.iban
+              : ("global.no_data_available" | translate)
+          }}
+        </span>
+      </li>
+    </ul>
+  </ng-container>
+
+  <h5 class="fw-600" translate="companies.owner_details"></h5>
+  <div class="d-flex align-items-center gap-3 mt-3">
+    <img
+      [src]="company.profileImage.fullLink"
+      height="60"
+      width="60"
+      class="obj-cover obj-position-c rounded-10"
+      onerror="this.src = 'assets/images/icons/person.png'"
+    />
+    <div>
+      <h6 class="fw-700 m-0">{{ company.firstName }} {{ company.lastName }}</h6>
+      <ul class="m-0 list-info">
+        <li>
+          <div class="d-flex gap-2 align-items-center">
+            <ion-icon name="mail" class="d-inline-block"></ion-icon>
+            <span class="d-inline-block">
+              {{ company.email }}
+            </span>
+          </div>
+        </li>
+        <!-- <li>
+      <div class="d-flex gap-2 align-items-center">
+        <ion-icon name="mail" class="d-inline-block"></ion-icon>
+        <span class="d-inline-block">
+          {{ company?.accountName }}
+        </span>
+      </div>
+    </li> -->
+      </ul>
+    </div>
+  </div>
+</div>

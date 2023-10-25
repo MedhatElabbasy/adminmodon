@@ -1,0 +1,30 @@
+.e-ddl{
+    width: 100% !important;
+}
+
+#dropdown1_wrapper{
+    width: 100% !important;
+}
+.dropdown1_container{
+    width: 100% !important;
+}
+.e-widget{
+    width: 100% !important;
+}
+.ff{
+    width: 100% !important;
+}
+
+.ff::ng-deep .e-ddl{
+    width: 100% !important;
+}
+
+.ff::ng-deep .dropdown1_container{
+    width: 100% !important;
+}
+::ng-deep .dropdown1_container{
+    width: 100% !important;
+}
+::ng-deep .e-ddl{
+    width: 100% !important;
+}

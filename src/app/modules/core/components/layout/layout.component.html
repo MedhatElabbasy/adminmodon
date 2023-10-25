@@ -1,0 +1,225 @@
+<div class="layout">
+  <!-- ------------------------------- sidebar ------------------------------- -->
+  <aside [class.active]="!sidebarActive" class="sidebar d-flex flex-column">
+    <div id="logo-details" class="flex-grow-0">
+      <!-- <img id="logo" src="assets/images/logo.png" height="50" alt="takid-logo" /> -->
+      <div class="d-flex align-items-center justify-content-evenly">
+
+
+        <img src="assets/images/modonlogo.svg" alt="">
+        <img src="assets/images/takidlogo.svg" alt="">
+      </div>
+
+    </div>
+
+    <!-- ---------------------------- sidebar links ---------------------------- -->
+
+    <ul class="nav-links flex-grow-1">
+      <ng-container *ngFor="let item of sidebarMenu,let i=index">
+        <div *ngIf="user?.isTakidSuperAdmin || item.name !== 'users_management'">
+          <li *ngIf="!item.children">
+            <a [routerLink]="item.link" routerLinkActive="active">
+              <div class="sidebar-icon">
+                <span class="icon_wrapper">
+                  <ion-icon *ngIf="item.icon" [name]="item.icon"></ion-icon>
+                  <svg-icon *ngIf="item.image" [src]="item.image"></svg-icon>
+                </span>
+              </div>
+              <span class="link_name" [translate]="'sidebar.' + item.name"></span>
+            </a>
+          </li>
+        </div>
+        <li *ngIf="item.children">
+          <a *ngIf="user?.isTakidSuperAdmin || item.name !== 'general_settings'" [class.sub-list]="item.children"
+            data-bs-toggle="collapse" routerLinkActive="active" [attr.data-bs-target]="'#' + item.name" id=`a{{i}}`
+            aria-expanded="true">
+            <div class="sidebar-icon">
+              <span class="icon_wrapper">
+                <ion-icon *ngIf="item.icon" [name]="item.icon"></ion-icon>
+                <svg-icon *ngIf="item.image" [src]="item.image"></svg-icon>
+              </span>
+            </div>
+            <span class="link_name" [translate]="'sidebar.' + item.name"></span>
+          </a>
+        </li>
+        <div *ngIf="user?.isTakidSuperAdmin || item.name !== 'general_settings'">
+          <div class="collapse" [id]="item.name">
+            <ul class="sub_list_content">
+              <li *ngFor="let subItem of item.children">
+                <a [routerLink]="['/' + item.link + '/' + subItem.link]" routerLinkActive="active">
+                  <div class="sidebar-icon">
+                    <ion-icon class="fs-5" *ngIf="subItem.icon" [name]="subItem.icon"></ion-icon>
+                    <svg-icon *ngIf="subItem.image" [src]="subItem.image"></svg-icon>
+                  </div>
+                  <span [translate]="'sidebar.' + subItem.name"></span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </ng-container>
+    </ul>
+
+    <div class="footer flex-grow-0">
+      <ul class="nav-links">
+        <!-- <li>
+          <a [routerLink]="[routing.underConstruction]" routerLinkActive="active">
+            <div class="sidebar-icon">
+              <span class="icon_wrapper">
+                <svg-icon src="assets/images/svgs/support.svg"></svg-icon>
+              </span>
+            </div>
+            <span class="link_name" translate="global.support"> </span>
+          </a>
+        </li> -->
+        <li>
+          <a [routerLink]="[routing.settings]" routerLinkActive="active">
+            <div class="sidebar-icon">
+              <span class="icon_wrapper">
+                <svg-icon src="assets/images/svgs/settings.svg"></svg-icon>
+              </span>
+            </div>
+            <span class="link_name" translate="global.settings"></span>
+          </a>
+        </li>
+      </ul>
+
+      <div class="pattern"></div>
+    </div>
+  </aside>
+
+  <main class="content">
+    <!-- ------------------------------- navbar -------------------------------- -->
+    <div class="top-navbar">
+      <nav>
+        <!-- ------------------------------- toggler ------------------------------- -->
+        <div class="sidebar-btn d-flex gap-3 align-items-center">
+          <svg-icon (click)="sidebarActive = !sidebarActive" svgClass="c-pointer" src="assets/images/svgs/menu.svg">
+          </svg-icon>
+          <div class="fw-400  fs-18 fw-600 text-capitalize d-none d-lg-block">
+            <span translate="global.welcome"></span>
+            <span class="fw-bold text-primary">
+              {{ user?.firstName + " " + user?.lastName }}
+            </span>
+          </div>
+        </div>
+
+        <!-- -------------------------------- tools -------------------------------- -->
+        <div class="d-flex gap-3 align-items-center">
+          <!-- ------------------------------- search -------------------------------- -->
+          <!-- <div id="search" class="fs-5 d-flex d-md-none">
+            <ion-icon name="search"></ion-icon>
+          </div>
+
+          <div class="input-group bg-info-o d-none d-md-flex flex-shrink-1">
+            <span class="input-group-text fs-5 px-2 bg-transparent text-info border-0" id="search">
+              <ion-icon name="search"></ion-icon>
+            </span>
+            <input type="text" [(ngModel)]="searchKey" class="form-control" [placeholder]="'global.search' | translate"
+              aria-describedby="search" />
+          </div> -->
+
+          <!-- -------------------------------- lang --------------------------------- -->
+          <div id="lang" (click)="onLangChange()">
+            <span translate="lang"></span>
+          </div>
+
+          <!-- ---------------------------- notification ----------------------------- -->
+          <!-- <div *ngIf="!url.includes('dashboard')" class="full" id="notification">
+            <svg-icon src="assets/images/svgs/bell.svg"></svg-icon>
+          </div> -->
+          <div class="dropdown">
+            <div class="alert-icon" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+              <svg id="Group_1464" data-name="Group 1464" xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36">
+                <rect id="Rectangle_372" data-name="Rectangle 372" width="36" height="36" rx="8" fill="#fff"/>
+                <path id="Path_2947" data-name="Path 2947" d="M493.293,229.8a3.887,3.887,0,0,1-1.063,2.85,3.363,3.363,0,0,0-.73,2.31,3.613,3.613,0,0,0,.863,2.378,4.534,4.534,0,0,0,2.9,1.413c1.571.134,3.143.247,4.737.247a41.693,41.693,0,0,0,4.736-.247,4.53,4.53,0,0,0,2.9-1.413,3.614,3.614,0,0,0,.864-2.378,3.368,3.368,0,0,0-.73-2.31,3.8,3.8,0,0,1-1.064-2.85v-.426a5.625,5.625,0,0,0-1.283-3.858A7.074,7.074,0,0,0,500.044,223h-.089a7.04,7.04,0,0,0-5.467,2.625,5.542,5.542,0,0,0-1.2,3.745Zm9.633,11.265c0-.5-.462-.734-.889-.833a25.778,25.778,0,0,0-4.046,0c-.428.1-.89.329-.89.833a1.557,1.557,0,0,0,.695,1.174,3.625,3.625,0,0,0,1.713.731,3.739,3.739,0,0,0,1.008,0,3.612,3.612,0,0,0,1.714-.732A1.553,1.553,0,0,0,502.926,241.061Z" transform="translate(-482.5 -215)" fill="#006996" fill-rule="evenodd"/>
+                <g id="Ellipse_28" data-name="Ellipse 28" transform="translate(9 6)" fill="#ed212b" stroke="#fff" stroke-width="1">
+                  <circle cx="4" cy="4" r="4" stroke="none"/>
+                  <circle cx="4" cy="4" r="3.5" fill="none"/>
+                </g>
+              </svg>
+              
+            </div>
+
+            <ul class="dropdown-menu text-capitalize p-0  w-fit rounded-12" aria-labelledby="dropdownMenuButton">
+              <li>
+                <div>
+                  <div class="main">
+                    <h3 class="m-3" style="font-size:20px; color:#12123C ; font-weight:bold; background-color: #F7F7FA;"
+                      translate="global.lastActivity"></h3>
+                    <hr>
+                    <div class="search-results-container" [scrollWindow]="false" infiniteScroll
+                      [infiniteScrollDistance]="scrollDistance" [infiniteScrollUpDistance]="scrollUpDistance"
+                      [infiniteScrollThrottle]="throttle" (scrolled)="onScrollDown()">
+                      <div class="container">
+                        <div class="row">
+                          <div *ngFor="let notify of AllNotify;let i=index">
+                            <div class="cardd mt-1">
+                              <div class="row">
+                                <div class="col-3"><img class="img-fluid"
+                                    src="assets/images/notifications/{{notify.notificationType}}.svg"
+                                    alt="notification" /></div>
+                                <div class="col-9">
+                                  <h5 class="title text-muted" style="font-size: 12px; margin:auto;">
+                                    {{notify.created.slice(11,16)}}</h5>
+                                  <p>{{(lang.isAr | async)? notify.description : notify.descriptionEn}}</p>
+                                  <h5 class="title text-muted" style="font-size: 12px;">{{notify.created.split(" ")[0]}}
+                                  </h5>
+                                </div>
+                              </div>
+                              <div class="body">
+
+                                <hr>
+                              </div>
+                            </div>
+                          </div>
+                          <div id="loading" class="lds-ellipsis">
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </li>
+            </ul>
+
+          </div>
+          <!-- ---------------------------- profile image ---------------------------- -->
+          <div id="user" class="dropdown">
+            <a id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+              <img id="user-img" [src]="user?.photo?.fullLink" onerror="this.src='assets/images/icons/person.png'" />
+            </a>
+
+            <ul class="dropdown-menu text-capitalize p-0 overflow-hidden w-fit mt-2 rounded-12"
+              aria-labelledby="dropdownMenuButton">
+              <li>
+                <a class="dropdown-item" (click)="logout()">
+                  <div class="icon bg-danger-o flex-shrink-0">
+                    <i class="fa-solid fa-power-off text-danger"></i>
+                  </div>
+                  {{ "global.logout" | translate }}
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+      <div class="px-4">
+        <hr class="mt-0" />
+      </div>
+    </div>
+
+    <!-- ----------------------------------------------------------------------- -->
+    <!-- ----------------------------------------------------------------------- -->
+    <!-- ------------------------------- content ------------------------------- -->
+    <section class="container-fluid stage">
+      <div class="p-2 pb-4">
+        <router-outlet></router-outlet>
+      </div>
+    </section>
+  </main>
+</div>
